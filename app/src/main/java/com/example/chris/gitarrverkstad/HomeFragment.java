@@ -7,13 +7,55 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private List<Appointment> appointments = new ArrayList<Appointment>();
     View currentView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.home_layout, container, false);
+        populateList();
+        populateListView();
         return currentView;
+    }
+
+    private void populateList(){
+        appointments.add(new Appointment("2017-02-28", "Hitta fel på gitarr", "Kalle Karlsson", "13:00"));
+        appointments.add(new Appointment("2017-03-11", "Byt strängar på gitarr", "Pelle Persson", "14:00"));
+        appointments.add(new Appointment("2017-03-15", "Stämma en gitarr", "Lukas Lundqvist", "15:00"));
+    }
+
+    private void populateListView(){
+        ArrayAdapter<Appointment> adapter = new CustomListAdapter();
+        ListView list = (ListView) currentView.findViewById(R.id.next_appointment_list);
+        list.setAdapter(adapter);
+    }
+
+    private class CustomListAdapter extends ArrayAdapter<Appointment>{
+        public CustomListAdapter(){
+            super(getActivity(), R.layout.item_next_appointment, appointments);
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            View itemView = convertView;
+            if(itemView == null){
+                itemView = getActivity().getLayoutInflater().inflate(R.layout.item_next_appointment, parent, false);
+            }
+            Appointment currentAppointment = appointments.get(position);
+            TextView textView = (TextView) itemView.findViewById(R.id.listitem_custname);
+            textView.setText(currentAppointment.getCustomer());
+            textView = (TextView) itemView.findViewById(R.id.listitem_desc);
+            textView.setText(currentAppointment.getDescription());
+            textView = (TextView) itemView.findViewById(R.id.listitem_time);
+            textView.setText(currentAppointment.getTime());
+            return itemView;
+        }
     }
 }
