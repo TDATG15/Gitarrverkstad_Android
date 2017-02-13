@@ -4,9 +4,11 @@ import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ public class HomeFragment extends Fragment {
         currentView = inflater.inflate(R.layout.home_layout, container, false);
         populateList();
         populateListView();
+        registerClickCallback();
         return currentView;
     }
 
@@ -36,6 +39,28 @@ public class HomeFragment extends Fragment {
         ArrayAdapter<Appointment> adapter = new CustomListAdapter();
         ListView list = (ListView) currentView.findViewById(R.id.next_appointment_list);
         list.setAdapter(adapter);
+        TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
+        textView.setText(appointments.get(0).getCustomer());
+        textView = (TextView) currentView.findViewById(R.id.selected_desc);
+        textView.setText(appointments.get(0).getDescription());
+        textView = (TextView) currentView.findViewById(R.id.selected_time);
+        textView.setText(appointments.get(0).getTime());
+    }
+
+    private void registerClickCallback(){
+        ListView list = (ListView) currentView.findViewById(R.id.next_appointment_list);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id){
+                TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
+                textView.setText(appointments.get(position).getCustomer());
+                textView = (TextView) currentView.findViewById(R.id.selected_desc);
+                textView.setText(appointments.get(position).getDescription());
+                textView = (TextView) currentView.findViewById(R.id.selected_time);
+                textView.setText(appointments.get(position).getTime());
+            }
+        });
+
     }
 
     private class CustomListAdapter extends ArrayAdapter<Appointment>{
