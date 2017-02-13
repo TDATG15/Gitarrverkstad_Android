@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home_black_24dp"
             android:title="Hem" />
         <item
             android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_today_black_24dp"
             android:title="Schema" />
         <item
             android:id="@+id/nav_shop"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="Affär" />
         <item
             android:id="@+id/nav_economy"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_attach_money_black_24dp"
             android:title="Ekonomi" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Dela" />
-            <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Skicka" />
+                android:icon="@drawable/ic_email_black_24dp"
+                android:title="Mail" />
         </menu>
     </item>
 
