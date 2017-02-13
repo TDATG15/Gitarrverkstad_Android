@@ -37,9 +37,12 @@ public class ShopFragment extends Fragment {
     }
 
     public void populateList(){
-        galleryItems.add(new GalleryItem("Kalles", "Mycket bra!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 4000));
-        galleryItems.add(new GalleryItem("Pelles", "Mycket dålig!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 3000));
-        galleryItems.add(new GalleryItem("Karls", "Den är okej. bla bla bla bla bla", R.mipmap.ic_guitar_icon, 2000));
+        galleryItems.add(new GalleryItem("Kalles gitarr", "Mycket bra!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 4000));
+        galleryItems.add(new GalleryItem("Pelles gitarr", "Mycket dålig!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 3000));
+        galleryItems.add(new GalleryItem("Karls gitarr", "Den är okej. bla bla bla bla bla", R.mipmap.ic_guitar_icon, 2000));
+        galleryItems.add(new GalleryItem("Super gitarr", "Mycket bra!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 4000));
+        galleryItems.add(new GalleryItem("Gammal gitarr", "Mycket dålig!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 3000));
+        galleryItems.add(new GalleryItem("Ny gitarr", "Den är okej. bla bla bla bla bla", R.mipmap.ic_guitar_icon, 2000));
     }
 
     public void populateListView(){

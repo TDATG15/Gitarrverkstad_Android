@@ -33,6 +33,8 @@ public class HomeFragment extends Fragment {
         appointments.add(new Appointment("2017-02-28", "Hitta fel på gitarr", "Kalle Karlsson", "13:00"));
         appointments.add(new Appointment("2017-03-11", "Byt strängar på gitarr", "Pelle Persson", "14:00"));
         appointments.add(new Appointment("2017-03-15", "Stämma en gitarr", "Lukas Lundqvist", "15:00"));
+        appointments.add(new Appointment("2017-02-28", "Konsultation", "Anton Andersson", "16:00"));
+        appointments.add(new Appointment("2017-03-11", "Byt strängar på gitarr", "Björn Björk", "17:00"));
     }
 
     private void populateListView(){

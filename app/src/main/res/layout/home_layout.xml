@@ -12,7 +12,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250sp"
+        android:layout_height="255sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:id="@+id/selected_layout">
@@ -21,9 +21,19 @@
             android:text="Time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/selected_time"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/selected_time" />
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:text="Customer Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:id="@+id/selected_cust"
+            android:layout_alignTop="@+id/selected_time"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:text="Description Name"
@@ -32,14 +42,5 @@
             android:id="@+id/selected_desc"
             android:layout_below="@+id/selected_cust"
             android:layout_alignParentStart="true" />
-
-        <TextView
-            android:text="Customer Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/selected_cust" />
     </RelativeLayout>
 </RelativeLayout>
