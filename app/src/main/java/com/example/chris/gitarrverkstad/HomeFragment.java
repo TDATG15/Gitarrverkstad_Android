@@ -2,9 +2,7 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,9 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private List<Appointment> appointments = new ArrayList<Appointment>();
+
     View currentView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateListView(){
-        ArrayAdapter<Appointment> adapter = new CustomListAdapter();
+        ArrayAdapter<Appointment> adapter = new AppointmentListAdapter();
         ListView list = (ListView) currentView.findViewById(R.id.next_appointment_list);
         list.setAdapter(adapter);
         TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
@@ -63,8 +63,8 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private class CustomListAdapter extends ArrayAdapter<Appointment>{
-        public CustomListAdapter(){
+    private class AppointmentListAdapter extends ArrayAdapter<Appointment>{
+        public AppointmentListAdapter(){
             super(getActivity(), R.layout.item_next_appointment, appointments);
         }
         @Override
