@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_guitar_icon"
+        android:id="@+id/selectedGalleryItem_image"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:minHeight="160dp"
+        android:minWidth="160dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/selectedGalleryItem_name"
+        android:layout_below="@+id/statictext_name"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Kostnad:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectedGalleryItem_name"
+        android:layout_alignParentStart="true"
+        android:id="@+id/statictext_price" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Price"
+        android:ems="10"
+        android:id="@+id/selectedGalleryItem_price"
+        android:layout_below="@+id/statictext_price"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Beskrivning:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectedGalleryItem_price"
+        android:layout_alignParentStart="true"
+        android:id="@+id/statictext_desc" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Desc"
+        android:ems="10"
+        android:id="@+id/selectedGalleryItem_desc"
+        android:layout_below="@+id/statictext_desc"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Namn:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/statictext_name"
+        android:layout_below="@+id/selectedGalleryItem_image"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp" />
+
+    <Button
+        android:text="Ny bild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedGalleryItem_photob"
+        android:layout_alignBottom="@+id/selectedGalleryItem_image"
+        android:layout_toEndOf="@+id/selectedGalleryItem_name"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="55dp" />
+
+    <Button
+        android:text="Avbryt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:id="@+id/selectedGalleryItem_cancelb"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/statictext_name" />
+
+    <Button
+        android:text="Publicera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedGalleryItem_publishb"
+        android:layout_alignBaseline="@+id/selectedGalleryItem_cancelb"
+        android:layout_alignBottom="@+id/selectedGalleryItem_cancelb"
+        android:layout_alignEnd="@+id/selectedGalleryItem_photob" />
+
+</RelativeLayout>

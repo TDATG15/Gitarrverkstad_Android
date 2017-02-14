@@ -1,6 +1,7 @@
 package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,6 +35,7 @@ public class ShopFragment extends Fragment {
         currentView = inflater.inflate(R.layout.shop_layout, container, false);
         populateList();
         populateListView();
+        registerClickCallback();
         return currentView;
     }
 
@@ -73,5 +76,18 @@ public class ShopFragment extends Fragment {
             textView.setText("" + currentItem.getPrice() + "kr");
             return itemView;
         }
+    }
+
+    public void registerClickCallback(){
+        ListView list = (ListView) currentView.findViewById(R.id.shop_gallery_list);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id){
+                FragmentManager fragmentManager = getFragmentManager();
+                GalleryItemSelectedFragment frag = new GalleryItemSelectedFragment();
+                frag.setSelectedItem(galleryItems.get(position));
+                fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+            }
+        });
     }
 }
