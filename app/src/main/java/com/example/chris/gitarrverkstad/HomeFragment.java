@@ -41,12 +41,14 @@ public class HomeFragment extends Fragment {
         ArrayAdapter<Appointment> adapter = new AppointmentListAdapter();
         ListView list = (ListView) currentView.findViewById(R.id.next_appointment_list);
         list.setAdapter(adapter);
-        TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
-        textView.setText(appointments.get(0).getCustomer());
-        textView = (TextView) currentView.findViewById(R.id.selected_desc);
-        textView.setText(appointments.get(0).getDescription());
-        textView = (TextView) currentView.findViewById(R.id.selected_time);
-        textView.setText(appointments.get(0).getTime());
+        if(appointments.size() > 0) {
+            TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
+            textView.setText(appointments.get(0).getCustomer());
+            textView = (TextView) currentView.findViewById(R.id.selected_desc);
+            textView.setText(appointments.get(0).getDescription());
+            textView = (TextView) currentView.findViewById(R.id.selected_time);
+            textView.setText(appointments.get(0).getTime());
+        }
     }
 
     private void registerClickCallback(){
