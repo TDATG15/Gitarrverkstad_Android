@@ -2,7 +2,10 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,7 @@ import java.util.List;
 
 public class ShopFragment extends Fragment {
     private List<GalleryItem> galleryItems = new ArrayList<GalleryItem>();
+    static final int CAM_REQUEST = 1;
     View currentView;
     @Nullable
     @Override
@@ -89,5 +94,24 @@ public class ShopFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
             }
         });
+
+        ImageView new_item_button = (ImageView) currentView.findViewById(R.id.new_item_button);
+        new_item_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new NewShopItemFragment()).commit();
+            }
+        });
+    }
+
+    private File getFile() {
+        File folder = new File("sdcard/camera_app");
+        if(!folder.exists()) {
+            folder.mkdir();
+        }
+
+        File image_file = new File(folder, "cam_image.jpg");
+        return image_file;
     }
 }
