@@ -5,23 +5,38 @@ package com.example.chris.gitarrverkstad;
  */
 
 public class GalleryItem {
-    private String name;
+    private String instrumentID;
     private double price;
     private String desc;
+    private String model;
+    private String creator;
     private int imageID;
-    public GalleryItem(String name, String desc, int imageID, double price){
-        this.name = name;
+    private String prevown;
+
+    public GalleryItem(String desc, int imageID, String model, double price, String creator, String prevown, String instrumentID){
         this.price = price;
         this.desc = desc;
+        this.model = model;
         this.imageID = imageID;
+        this.creator = creator;
+        this.instrumentID = instrumentID;
+        this.prevown = prevown;
     }
 
-    public String getName() {
-        return name;
+    public String getPrevown() {
+        return prevown;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPrevown(String prevown) {
+        this.prevown = prevown;
+    }
+
+    public String getInstrumentID() {
+        return instrumentID;
+    }
+
+    public void setInstrumentID(String instrumentID) {
+        this.instrumentID = instrumentID;
     }
 
     public double getPrice() {
@@ -40,11 +55,28 @@ public class GalleryItem {
         this.desc = desc;
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
     public int getImageID() {
         return imageID;
     }
 
-    public void setImageID(int image) {
-        this.imageID = image;
+    public void setImageID(int imageID) {
+        this.imageID = imageID;
     }
+
 }

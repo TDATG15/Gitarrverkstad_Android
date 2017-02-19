@@ -2,16 +2,10 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,8 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,25 +28,52 @@ import java.util.List;
 
 public class ShopFragment extends Fragment {
     private List<GalleryItem> galleryItems = new ArrayList<GalleryItem>();
+    Document doc;
     static final int CAM_REQUEST = 1;
     View currentView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.shop_layout, container, false);
-        populateList();
-        populateListView();
-        registerClickCallback();
+        try {
+            ConnectXml();
+        } catch(Exception e){
+            Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
+            e.printStackTrace();
+        }
         return currentView;
     }
 
+    private void ConnectXml() throws Exception{
+            new XMLTask().execute("http://10.250.121.6:8080/WebApplication2/webresources/test_2.instrument");
+    }
+
+    private void afterConnection(Document document){
+        this.doc = document;
+        populateList();
+        populateListView();
+        registerClickCallback();
+    }
+
     public void populateList(){
-        galleryItems.add(new GalleryItem("Kalles gitarr", "Mycket bra!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 4000));
-        galleryItems.add(new GalleryItem("Pelles gitarr", "Mycket dålig!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 3000));
-        galleryItems.add(new GalleryItem("Karls gitarr", "Den är okej. bla bla bla bla bla", R.mipmap.ic_guitar_icon, 2000));
-        galleryItems.add(new GalleryItem("Super gitarr", "Mycket bra!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 4000));
-        galleryItems.add(new GalleryItem("Gammal gitarr", "Mycket dålig!!!! bla bla bla bla bla", R.mipmap.ic_guitar_icon, 3000));
-        galleryItems.add(new GalleryItem("Ny gitarr", "Den är okej. bla bla bla bla bla", R.mipmap.ic_guitar_icon, 2000));
+        NodeList descList = doc.getElementsByTagName("beskrivning");
+        NodeList modelList = doc.getElementsByTagName("modell");
+        NodeList priceList = doc.getElementsByTagName("pris");
+        NodeList creatorList = doc.getElementsByTagName("tillverkare");
+        NodeList idList = doc.getElementsByTagName("instrumentId");
+        NodeList prevownList = doc.getElementsByTagName("tidigareAgare");
+        //(String desc, int imageID, String model, double price, String creator, String prevown, String instrumentID)
+        for(int i = 0; i < descList.getLength(); i++){
+            galleryItems.add(new GalleryItem(
+                        descList.item(i).getTextContent(),
+                        R.mipmap.ic_guitar_icon,
+                        modelList.item(i).getTextContent(),
+                        Double.parseDouble(priceList.item(i).getTextContent()),
+                        creatorList.item(i).getTextContent(),
+                        prevownList.item(i).getTextContent(),
+                        idList.item(i).getTextContent()
+                    ));
+        }
     }
 
     public void populateListView(){
@@ -74,7 +97,7 @@ public class ShopFragment extends Fragment {
             ImageView imageView = (ImageView) itemView.findViewById(R.id.itemgallery_image);
             imageView.setImageResource(currentItem.getImageID());
             TextView textView = (TextView) itemView.findViewById(R.id.itemgallery_name);
-            textView.setText(currentItem.getName());
+            textView.setText(currentItem.getModel());
             textView = (TextView) itemView.findViewById(R.id.itemgallery_desc);
             textView.setText(currentItem.getDesc());
             textView = (TextView) itemView.findViewById(R.id.itemgallery_price);
@@ -113,5 +136,34 @@ public class ShopFragment extends Fragment {
 
         File image_file = new File(folder, "cam_image.jpg");
         return image_file;
+    }
+
+    public class XMLTask extends AsyncTask<String, Document, Document> {
+
+
+
+        @Override
+        protected Document doInBackground(String... params){
+            HttpXmlConnecter xmlconnecter;
+            Document doc = null;
+            try {
+                xmlconnecter = new HttpXmlConnecter(params[0]);
+                xmlconnecter.start();
+                //temp = temp + xmlhandler.toString();
+                //temp = temp + xmlhandler.getChildNodesTextContext("instrument", 0);
+                doc = xmlconnecter.getDoc();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            return doc;
+        }
+        @Override
+        protected void onPostExecute(Document result) {
+            super.onPostExecute(result);
+            //olddoc = new DocumentManager(result);
+            afterConnection(result);
+        }
+
     }
 }

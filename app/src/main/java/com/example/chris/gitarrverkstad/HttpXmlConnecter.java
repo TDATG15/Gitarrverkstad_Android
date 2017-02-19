@@ -3,6 +3,7 @@ package com.example.chris.gitarrverkstad;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -41,6 +42,13 @@ public class HttpXmlConnecter {
 
     public void setConnection(HttpURLConnection connection) {
         this.connection = connection;
+    }
+
+    public void postIntoURL(String toPost, int index) throws Exception{
+        url = new URL(url.getPath() + "/" + Integer.toString(index));
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+
     }
 
     public HttpXmlConnecter(String xmlurl) throws Exception{

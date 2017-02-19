@@ -33,7 +33,7 @@ public class GalleryItemSelectedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.edit_gallery_item_layout, container, false);
         EditText editText = (EditText) currentView.findViewById(R.id.selectedGalleryItem_name);
-        editText.setText(selectedItem.getName());
+        editText.setText(selectedItem.getModel());
         editText = (EditText) currentView.findViewById(R.id.selectedGalleryItem_desc);
         editText.setText(selectedItem.getDesc());
         editText = (EditText) currentView.findViewById(R.id.selectedGalleryItem_price);
