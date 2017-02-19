@@ -31,6 +31,7 @@ public class ShopFragment extends Fragment {
     Document doc;
     static final int CAM_REQUEST = 1;
     View currentView;
+    int value;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
