@@ -5,11 +5,19 @@ import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * Created by stefa_000 on 2017-02-17.
@@ -44,11 +52,27 @@ public class HttpXmlConnecter {
         this.connection = connection;
     }
 
-    public void postIntoURL(String toPost, int index) throws Exception{
+    public String convertDocumentToString(Document doc) throws TransformerException{
+        StringWriter sw = new StringWriter();
+        Transformer serializer = TransformerFactory.newInstance().newTransformer();
+        serializer.transform(new DOMSource(doc), new StreamResult(sw));
+        return sw.toString();
+    }
+
+    public void postIntoURL(Document doc, int index) throws Exception{
         url = new URL(url.getPath() + "/" + Integer.toString(index));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
         connection.setRequestMethod("POST");
-
+        connection.setRequestProperty("Content-Type","application/xml");
+        String input = convertDocumentToString(doc);
+        OutputStream os = connection.getOutputStream();
+        os.write(input.getBytes());
+        os.flush();
+        if(connection.getResponseCode() != HttpURLConnection.HTTP_CREATED){
+            throw new RuntimeException("Failed: HTTP ERROR CODE : " + connection.getResponseCode());
+        }
+        stop();
     }
 
     public HttpXmlConnecter(String xmlurl) throws Exception{

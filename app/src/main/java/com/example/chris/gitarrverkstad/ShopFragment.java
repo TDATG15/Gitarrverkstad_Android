@@ -46,7 +46,7 @@ public class ShopFragment extends Fragment {
     }
 
     private void ConnectXml() throws Exception{
-            new XMLTask().execute("http://10.250.121.6:8080/WebApplication2/webresources/test_2.instrument");
+            new XMLTask().execute("http://andersverkstad.zapto.org:8080/ProjectEE-war/webresources/entities.instrument");
     }
 
     private void afterConnection(Document document){
