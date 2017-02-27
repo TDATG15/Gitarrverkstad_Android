@@ -19,8 +19,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by stefa_000 on 2017-02-10.
@@ -28,7 +36,7 @@ import java.util.List;
 
 public class ShopFragment extends Fragment {
     private List<GalleryItem> galleryItems = new ArrayList<GalleryItem>();
-    Document doc;
+    InstrumentList instrumentList;
     static final int CAM_REQUEST = 1;
     View currentView;
     int value;
@@ -46,35 +54,77 @@ public class ShopFragment extends Fragment {
     }
 
     private void ConnectXml() throws Exception{
-            new XMLTask().execute("http://andersverkstad.zapto.org:8080/ProjectEE-war/webresources/entities.instrument");
+        String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(new OkHttpClient())
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+        InstrumentClient client = retrofit.create(InstrumentClient.class);
+
+        retrofit2.Call<InstrumentList> call = client.getInstruments();
+        call.enqueue(new Callback<InstrumentList>() {
+
+            @Override
+            public void onResponse(Call<InstrumentList> call, Response<InstrumentList> response) {
+                InstrumentList instrumentList = response.body();
+                afterConnection(instrumentList, null);
+            }
+
+            @Override
+            public void onFailure(Call<InstrumentList> call, Throwable t) {
+                afterConnection(null, t.getMessage());
+            }
+
+        });
+           // new XMLTask().execute("http://andersverkstad.zapto.org:8080/ProjectEE-war/webresources/entities.instrument");
     }
 
-    private void afterConnection(Document document){
-        this.doc = document;
-        populateList();
+    private void afterConnection(InstrumentList instrumentList, String failmessage){
+        this.instrumentList = instrumentList;
+        if(instrumentList != null) {
+            populateList();
+        }else{
+            populateFailList(failmessage);
+        }
         populateListView();
         registerClickCallback();
     }
 
     public void populateList(){
-        NodeList descList = doc.getElementsByTagName("beskrivning");
-        NodeList modelList = doc.getElementsByTagName("modell");
+        List<Instrument> instruments = instrumentList.getInstruments();
+       /* NodeList descList = doc.getElementsByTagName("beskrivning");
+        NodeList modelList = doc.getElementsByTagName("model");
         NodeList priceList = doc.getElementsByTagName("pris");
         NodeList creatorList = doc.getElementsByTagName("tillverkare");
         NodeList idList = doc.getElementsByTagName("instrumentId");
-        NodeList prevownList = doc.getElementsByTagName("tidigareAgare");
+        NodeList prevownList = doc.getElementsByTagName("tidigareAgare");*/
         //(String desc, int imageID, String model, double price, String creator, String prevown, String instrumentID)
-        for(int i = 0; i < descList.getLength(); i++){
+        for(int i = 0; i < instruments.size(); i++){
             galleryItems.add(new GalleryItem(
-                        descList.item(i).getTextContent(),
+                        instruments.get(i).getBeskrivning(),
                         R.mipmap.ic_guitar_icon,
-                        modelList.item(i).getTextContent(),
-                        Double.parseDouble(priceList.item(i).getTextContent()),
-                        creatorList.item(i).getTextContent(),
-                        prevownList.item(i).getTextContent(),
-                        idList.item(i).getTextContent()
+                        instruments.get(i).getModel(),
+                        Double.parseDouble(instruments.get(i).getPris()),
+                        instruments.get(i).getTillverkare(),
+                        instruments.get(i).getTidigareAgare(),
+                        Integer.toString(instruments.get(i).getInstrumentId())
                     ));
         }
+    }
+
+    public void populateFailList(String failmessage){
+            galleryItems.add(new GalleryItem(
+                    failmessage,
+                    R.mipmap.ic_guitar_icon,
+                    "FAIL",
+                    0,
+                    "FAIL",
+                    "FAIL",
+                    "FAIL"
+            ));
     }
 
     public void populateListView(){
@@ -138,10 +188,8 @@ public class ShopFragment extends Fragment {
         File image_file = new File(folder, "cam_image.jpg");
         return image_file;
     }
-
+/*
     public class XMLTask extends AsyncTask<String, Document, Document> {
-
-
 
         @Override
         protected Document doInBackground(String... params){
@@ -166,5 +214,5 @@ public class ShopFragment extends Fragment {
             afterConnection(result);
         }
 
-    }
+    }*/
 }
