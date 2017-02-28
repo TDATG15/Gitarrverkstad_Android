@@ -34,45 +34,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <EditText
-    android:id="@+id/beskrivning"
-    android:hint="Description"
-    android:padding="20dp"
-    android:layout_below="@+id/new_item_HScrollView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/Model"
-        android:hint="Model"
-        android:padding="20dp"
-        android:layout_below="@+id/beskrivning"
+    <LinearLayout
+        android:layout_below="@+id/new_item_HScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/item_price"
-        android:hint="Pice"
-        android:padding="20dp"
-        android:layout_below="@+id/Model"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/new_item_desc"
+            android:hint="Description"
+            android:padding="20dp"
+            android:layout_below="@+id/new_item_HScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/item_previous_owner"
-        android:hint="Previous owner"
-        android:padding="20dp"
-        android:layout_below="@+id/item_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/new_item_model"
+            android:hint="Model"
+            android:padding="20dp"
+            android:layout_below="@+id/new_item_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/item_maker"
-        android:hint="Maker"
-        android:padding="20dp"
-        android:layout_below="@+id/item_previous_owner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/new_item_price"
+            android:hint="Pice"
+            android:padding="20dp"
+            android:layout_below="@+id/new_item_model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/new_item_previous_owner"
+            android:hint="Previous owner"
+            android:padding="20dp"
+            android:layout_below="@+id/new_item_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/new_item_maker"
+            android:hint="Maker"
+            android:padding="20dp"
+            android:layout_below="@+id/new_item_previous_owner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/new_item_done"
