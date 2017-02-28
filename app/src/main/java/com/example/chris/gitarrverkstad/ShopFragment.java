@@ -122,7 +122,7 @@ public class ShopFragment extends Fragment {
         }
         newestInstrumentId = biggest + 1;
         //boolean stop = false helllhlhlhl
-        for (int i = 1, j = 0; i < biggest; i++) {
+        for (int i = 1, j = 0; i < biggest - 1; i++) {
             j = 0;
             for(; j < instruments.size(); j++) {
                 if(i == instruments.get(j).getInstrumentId()){
