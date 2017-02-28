@@ -210,7 +210,6 @@ public class ShopFragment extends Fragment {
         @Override
         protected void onPostExecute(Document result) {
             super.onPostExecute(result);
-            //olddoc = new DocumentManager(result);
             afterConnection(result);
         }
 

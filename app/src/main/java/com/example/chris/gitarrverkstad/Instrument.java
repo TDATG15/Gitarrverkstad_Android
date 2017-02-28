@@ -75,4 +75,17 @@ public class Instrument {
     public void setTillverkare(String tillverkare) {
         this.tillverkare = tillverkare;
     }
+
+    public Instrument(){
+        super();
+    }
+
+    public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareAgare, String tillverkare){
+        this.beskrivning = beskrivning;
+        this.instrumentId = instrumentId;
+        this.model = model;
+        this.pris = pris;
+        this.tillverkare = tillverkare;
+        this.tidigareAgare = tidigareAgare;
+    }
 }
