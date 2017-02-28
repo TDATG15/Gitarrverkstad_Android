@@ -1,129 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom|top">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Desc"
-        android:ems="10"
-        android:id="@+id/selectedGalleryItem_current_owner"
-        android:layout_below="@+id/selectedGalleryItem_desc"
-        android:layout_alignParentStart="true" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Desc"
-        android:ems="10"
-        android:id="@+id/selectedGalleryItem_desc"
-        android:layout_below="@+id/statictext_desc"
-        android:layout_alignParentStart="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom|top"
+            android:background="#ffffff">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_guitar_icon"
-        android:id="@+id/selectedGalleryItem_image"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:minHeight="160dp"
-        android:minWidth="160dp"
-        android:maxHeight="160dp"
-        android:maxWidth="160dp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:id="@+id/selectedGalleryItem_model"
-        android:layout_below="@+id/statictext_name"
-        android:layout_alignParentStart="true" />
+                <HorizontalScrollView
+                    android:id="@+id/selectedGalleryItem_HScrollView"
+                    android:background="@color/pictureBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
 
-    <TextView
-        android:text="Kostnad:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/selectedGalleryItem_model"
-        android:layout_alignParentStart="true"
-        android:id="@+id/statictext_price" />
+                    <LinearLayout
+                        android:id="@+id/selectedGalleryItem_linear"
+                        android:gravity="left"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:orientation="horizontal">
 
-    <TextView
-        android:text="Beskrivning:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/selectedGalleryItem_price"
-        android:layout_alignParentStart="true"
-        android:id="@+id/statictext_desc" />
+                    </LinearLayout>
 
-    <TextView
-        android:text="Namn:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/statictext_name"
-        android:layout_below="@+id/selectedGalleryItem_image"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="14dp" />
+                </HorizontalScrollView>
 
-    <Button
-        android:text="Avbryt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:id="@+id/selectedGalleryItem_cancelb"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/statictext_name" />
+                <ImageButton
+                    android:id="@+id/selectedGalleryItem_photob"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:layout_alignBottom="@+id/selectedGalleryItem_HScrollView"
+                    android:layout_alignEnd="@+id/selectedGalleryItem_HScrollView"
+                    android:background="#00ffffff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <Button
-        android:text="Spara"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/selectedGalleryItem_publishb"
-        android:layout_alignBaseline="@+id/selectedGalleryItem_cancelb"
-        android:layout_alignBottom="@+id/selectedGalleryItem_cancelb"
-        android:layout_alignEnd="@+id/selectedGalleryItem_photob" />
+            </RelativeLayout>
 
-    <Button
-        android:text="Ny bild"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/selectedGalleryItem_photob"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="53dp"
-        android:layout_alignBottom="@+id/selectedGalleryItem_image"
-        android:layout_toEndOf="@+id/selectedGalleryItem_model" />
+            <TextView
+                android:textStyle="bold"
+                android:text="Beskrivning"
+                android:textSize="20dp"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <Button
-        android:text="TA BORT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/selectedGalleryItem_publishb"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/selectedGalleryItem_deleteb" />
+            <EditText
+                android:id="@+id/selectedGalleryItem_desc"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Desc"
-        android:ems="10"
-        android:id="@+id/selectedGalleryItem_previous_owner"
-        android:layout_above="@+id/selectedGalleryItem_cancelb"
-        android:layout_alignParentStart="true" />
+            <TextView
+                android:textStyle="bold"
+                android:text="Modell"
+                android:textSize="20dp"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Price"
-        android:ems="10"
-        android:id="@+id/selectedGalleryItem_price"
-        android:layout_below="@+id/statictext_price"
-        android:layout_alignParentStart="true" />
+            <EditText
+                android:id="@+id/selectedGalleryItem_model"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-</RelativeLayout>
+            <TextView
+                android:textStyle="bold"
+                android:text="Pris"
+                android:textSize="20dp"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/selectedGalleryItem_price"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textStyle="bold"
+                android:text="Föregående Ägare"
+                android:textSize="20dp"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/selectedGalleryItem_previous_owner"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textStyle="bold"
+                android:text="Nuvarande Ägare"
+                android:textSize="20dp"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/selectedGalleryItem_current_owner"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:textColor="#ffffff"
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/selectedGalleryItem_publishb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Ändra"/>
+
+                <Button
+                    android:textColor="#ffffff"
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/selectedGalleryItem_deleteb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Ta bort"/>
+
+                <Button
+                    android:textColor="#ffffff"
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/selectedGalleryItem_cancelb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Avbryt"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
