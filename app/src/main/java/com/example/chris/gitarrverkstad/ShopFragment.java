@@ -94,10 +94,10 @@ public class ShopFragment extends Fragment {
         registerClickCallback();
     }
 
-    public void populateList(){
+    public void populateList() {
         //boolean notdone = true;
         List<Instrument> instruments = instrumentList.getInstruments();
-        for(int i = 0; i < instruments.size(); i++) {
+        for (int i = 0; i < instruments.size(); i++) {
             galleryItems.add(new GalleryItem(
                     instruments.get(i).getBeskrivning(),
                     R.mipmap.ic_guitar_icon,
@@ -112,13 +112,28 @@ public class ShopFragment extends Fragment {
                 newestInstrumentId = i;
             }*/
         }
-        newestInstrumentId = -1;
-        for(int i = 1; i < instruments.size(); i++) {
-            if(instruments.get(i).getInstrumentId() > newestInstrumentId) {
-                newestInstrumentId = instruments.get(i).getInstrumentId();
+        newestInstrumentId = instruments.get(instruments.size() - 1).getInstrumentId() + 1;
+
+        int biggest = -1;
+        for(int i = 0; i < instruments.size(); i++){
+            if(instruments.get(i).getInstrumentId() > biggest){
+                biggest = instruments.get(i).getInstrumentId();
             }
         }
-        newestInstrumentId = newestInstrumentId + 1;
+        newestInstrumentId = biggest + 1;
+        //boolean stop = false;
+        for (int i = 1, j = 0; i < biggest; i++) {
+            j = 0;
+            for(; j < instruments.size(); j++) {
+                if(i == instruments.get(j).getInstrumentId()){
+                    break;
+                }
+            }
+            if(j == instruments.size()){
+                newestInstrumentId = i;
+                break;
+            }
+        }
     }
 
 
