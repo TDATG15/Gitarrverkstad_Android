@@ -1,10 +1,8 @@
 package com.example.chris.gitarrverkstad;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.File;
 
@@ -38,21 +35,29 @@ public class GalleryItemSelectedFragment extends Fragment {
     private ImageView imageView;
     Button saveButton;
     Button deleteButton;
+    Button cancelButton;
     EditText editTextDesc;
     EditText editTextPrice;
     EditText editTextModel;
+    EditText editTextPrevOwn;
+    EditText editTextCurrentOwn;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.edit_gallery_item_layout, container, false);
         saveButton = (Button) currentView.findViewById(R.id.selectedGalleryItem_publishb);
         deleteButton = (Button) currentView.findViewById(R.id.selectedGalleryItem_deleteb);
-        editTextModel = (EditText) currentView.findViewById(R.id.selectedGalleryItem_name);
+        cancelButton = (Button) currentView.findViewById(R.id.selectedGalleryItem_cancelb);
+        editTextModel = (EditText) currentView.findViewById(R.id.selectedGalleryItem_model);
         editTextModel.setText(selectedItem.getModel());
         editTextDesc = (EditText) currentView.findViewById(R.id.selectedGalleryItem_desc);
         editTextDesc.setText(selectedItem.getDesc());
         editTextPrice = (EditText) currentView.findViewById(R.id.selectedGalleryItem_price);
         editTextPrice.setText("" + selectedItem.getPrice() + "");
+        editTextPrevOwn = (EditText) currentView.findViewById(R.id.selectedGalleryItem_previous_owner);
+        editTextPrevOwn.setText(selectedItem.getPrevown());
+        editTextCurrentOwn = (EditText) currentView.findViewById(R.id.selectedGalleryItem_current_owner);
+        editTextCurrentOwn.setText(selectedItem.getCreator());
         imageView = (ImageView) currentView.findViewById(R.id.selectedGalleryItem_image);
         if (!imageView.hasOverlappingRendering()) {
             imageView.setImageResource(selectedItem.getImageID());
@@ -74,8 +79,8 @@ public class GalleryItemSelectedFragment extends Fragment {
                         Integer.parseInt(selectedItem.getInstrumentID()),
                         editTextModel.getText().toString(),
                         editTextPrice.getText().toString(),
-                        selectedItem.getCreator(),
-                        selectedItem.getPrevown()), selectedItem.getInstrumentID());
+                        editTextCurrentOwn.getText().toString(),
+                        editTextPrevOwn.getText().toString()), selectedItem.getInstrumentID());
                 call.enqueue(new Callback<Instrument>() {
 
                     @Override
@@ -106,6 +111,13 @@ public class GalleryItemSelectedFragment extends Fragment {
                 InstrumentClient client = retrofit.create(InstrumentClient.class);
                 retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
                 call.enqueue(new CustomCallback());
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitLayout();
             }
         });
         registerClickCallback();
