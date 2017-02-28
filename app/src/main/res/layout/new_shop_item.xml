@@ -50,7 +50,7 @@
 
             <EditText
                 android:id="@+id/new_item_desc"
-                android:hint="Description"
+                android:hint="Beskrivning"
                 android:padding="20dp"
                 android:layout_below="@+id/new_item_HScrollView"
                 android:layout_width="match_parent"
@@ -58,7 +58,7 @@
 
             <EditText
                 android:id="@+id/new_item_model"
-                android:hint="Model"
+                android:hint="Modell"
                 android:padding="20dp"
                 android:layout_below="@+id/new_item_desc"
                 android:layout_width="match_parent"
@@ -66,7 +66,7 @@
 
             <EditText
                 android:id="@+id/new_item_price"
-                android:hint="Pice"
+                android:hint="Pris"
                 android:padding="20dp"
                 android:layout_below="@+id/new_item_model"
                 android:layout_width="match_parent"
@@ -74,7 +74,7 @@
 
             <EditText
                 android:id="@+id/new_item_previous_owner"
-                android:hint="Previous owner"
+                android:hint="Föregående Ägare"
                 android:padding="20dp"
                 android:layout_below="@+id/new_item_price"
                 android:layout_width="match_parent"
@@ -82,7 +82,7 @@
 
             <EditText
                 android:id="@+id/new_item_maker"
-                android:hint="Maker"
+                android:hint="Nuvarande Ägare"
                 android:padding="20dp"
                 android:layout_below="@+id/new_item_previous_owner"
                 android:layout_width="match_parent"
@@ -99,14 +99,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:text="Done"/>
+                    android:text="Publicera"/>
 
                 <Button
                     android:id="@+id/new_item_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:text="Cancel"/>
+                    android:text="Avbryt"/>
 
 
             </RelativeLayout>

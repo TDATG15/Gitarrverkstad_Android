@@ -54,11 +54,15 @@ public class NewShopItemFragment extends Fragment {
         saveButton = (Button) currentView.findViewById(R.id.new_item_done);
         cancelButton = (Button) currentView.findViewById(R.id.new_item_cancel);
         editTextDesc = (EditText) currentView.findViewById(R.id.new_item_desc);
-        editTextDesc.setText(Integer.toString(instrumentId));
         editTextCurrOwn = (EditText) currentView.findViewById(R.id.new_item_maker);
         editTextModel = (EditText) currentView.findViewById(R.id.new_item_model);
         editTextPrice = (EditText) currentView.findViewById(R.id.new_item_price);
         editTextPrevOwn = (EditText) currentView.findViewById(R.id.new_item_previous_owner);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                exitLayout();
+            }
+        });
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
