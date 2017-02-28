@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -58,10 +59,6 @@ public class GalleryItemSelectedFragment extends Fragment {
         editTextPrevOwn.setText(selectedItem.getPrevown());
         editTextCurrentOwn = (EditText) currentView.findViewById(R.id.selectedGalleryItem_current_owner);
         editTextCurrentOwn.setText(selectedItem.getCreator());
-        imageView = (ImageView) currentView.findViewById(R.id.selectedGalleryItem_image);
-        if (!imageView.hasOverlappingRendering()) {
-            imageView.setImageResource(selectedItem.getImageID());
-        }
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +127,7 @@ public class GalleryItemSelectedFragment extends Fragment {
     }
 
     public void registerClickCallback(){
-        Button new_picture = (Button) currentView.findViewById(R.id.selectedGalleryItem_photob);
+        ImageButton new_picture = (ImageButton) currentView.findViewById(R.id.selectedGalleryItem_photob);
         new_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
