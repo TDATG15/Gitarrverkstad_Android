@@ -80,7 +80,7 @@
         android:layout_toEndOf="@+id/statictext_name" />
 
     <Button
-        android:text="Publicera"
+        android:text="Spara"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/selectedGalleryItem_publishb"
@@ -97,5 +97,13 @@
         android:layout_marginBottom="53dp"
         android:layout_alignBottom="@+id/selectedGalleryItem_image"
         android:layout_toEndOf="@+id/selectedGalleryItem_name" />
+
+    <Button
+        android:text="TA BORT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/selectedGalleryItem_publishb"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/selectedGalleryItem_deleteb" />
 
 </RelativeLayout>
