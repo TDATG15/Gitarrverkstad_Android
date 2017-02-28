@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -37,6 +41,7 @@ public class NewShopItemFragment extends Fragment {
     private View currentView;
     private static int TAKE_PICTURE = 1;
     private Uri imageUri;
+    private LinearLayout linearLayout;
     int instrumentId;
     Button saveButton;
     Button cancelButton;
@@ -49,6 +54,7 @@ public class NewShopItemFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.new_shop_item, container, false);
+        linearLayout = (LinearLayout) currentView.findViewById(R.id.new_item_linear);
         ImageButton addPictureButton = (ImageButton) currentView.findViewById(R.id.new_picture_button);
         addPictureButton.setOnClickListener(cameraListener);
         saveButton = (Button) currentView.findViewById(R.id.new_item_done);
@@ -116,10 +122,14 @@ public class NewShopItemFragment extends Fragment {
     }
 
     //Do something when photo was successfully taken
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK) {
+            ImageView imageView = new ImageView(currentView.getContext());
+            imageView.setImageDrawable(Drawable.createFromPath(imageUri.getPath()));
+            linearLayout.addView(imageView);
             // store photo to some kind of array
         }
     }
