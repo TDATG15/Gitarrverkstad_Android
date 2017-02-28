@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom|top"
+    android:background="#ffffff">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom|top"
+            android:background="#ffffff">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <HorizontalScrollView
+                    android:id="@+id/new_item_HScrollView"
+                    android:background="@color/pictureBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+
+                    <LinearLayout
+                        android:id="@+id/new_item_linear"
+                        android:gravity="left"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:orientation="horizontal">
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <ImageButton
+                    android:id="@+id/new_picture_button"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:layout_alignBottom="@+id/new_item_HScrollView"
+                    android:layout_alignEnd="@+id/new_item_HScrollView"
+                    android:background="#00ffffff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/new_item_desc"
+                android:hint="Description"
+                android:padding="20dp"
+                android:layout_below="@+id/new_item_HScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/new_item_model"
+                android:hint="Model"
+                android:padding="20dp"
+                android:layout_below="@+id/new_item_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/new_item_price"
+                android:hint="Pice"
+                android:padding="20dp"
+                android:layout_below="@+id/new_item_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/new_item_previous_owner"
+                android:hint="Previous owner"
+                android:padding="20dp"
+                android:layout_below="@+id/new_item_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/new_item_maker"
+                android:hint="Maker"
+                android:padding="20dp"
+                android:layout_below="@+id/new_item_previous_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/new_item_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="Done"/>
+
+                <Button
+                    android:id="@+id/new_item_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="Cancel"/>
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
