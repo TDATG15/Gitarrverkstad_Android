@@ -6,14 +6,14 @@ package com.example.chris.gitarrverkstad;
 
 public class GalleryItem {
     private String instrumentID;
-    private double price;
+    private int price;
     private String desc;
     private String model;
     private String creator;
     private int imageID;
     private String prevown;
 
-    public GalleryItem(String desc, int imageID, String model, double price, String creator, String prevown, String instrumentID){
+    public GalleryItem(String desc, int imageID, String model, int price, String creator, String prevown, String instrumentID){
         this.price = price;
         this.desc = desc;
         this.model = model;
@@ -39,11 +39,11 @@ public class GalleryItem {
         this.instrumentID = instrumentID;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

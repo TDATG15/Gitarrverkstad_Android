@@ -107,7 +107,7 @@ public class ShopFragment extends Fragment {
                         instruments.get(i).getBeskrivning(),
                         R.mipmap.ic_guitar_icon,
                         instruments.get(i).getModel(),
-                        Double.parseDouble(instruments.get(i).getPris()),
+                        Integer.parseInt(instruments.get(i).getPris()),
                         instruments.get(i).getTillverkare(),
                         instruments.get(i).getTidigareAgare(),
                         Integer.toString(instruments.get(i).getInstrumentId())

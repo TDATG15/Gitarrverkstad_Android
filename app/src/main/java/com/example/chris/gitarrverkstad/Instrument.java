@@ -85,7 +85,7 @@ public class Instrument {
         this.instrumentId = instrumentId;
         this.model = model;
         this.pris = pris;
-        this.tillverkare = tillverkare;
         this.tidigareAgare = tidigareAgare;
+        this.tillverkare = tillverkare;
     }
 }

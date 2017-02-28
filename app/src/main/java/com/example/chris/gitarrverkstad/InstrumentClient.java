@@ -16,7 +16,7 @@ public interface InstrumentClient {
     retrofit2.Call<InstrumentList> getInstruments();
 
     @DELETE("/ProjectEE-war/webresources/entities.instrument/{index}")
-    retrofit2.Call<InstrumentList> deleteInstrument(
+    retrofit2.Call<Instrument> deleteInstrument(
             @Path("index") String index
     );
 
