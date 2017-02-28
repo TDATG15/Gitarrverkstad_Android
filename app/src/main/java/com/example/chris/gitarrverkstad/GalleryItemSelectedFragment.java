@@ -111,10 +111,12 @@ public class GalleryItemSelectedFragment extends Fragment {
         registerClickCallback();
         return currentView;
     }
+
     public void exitLayout(){
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new ShopFragment()).commit();
     }
+
     public void registerClickCallback(){
         Button new_picture = (Button) currentView.findViewById(R.id.selectedGalleryItem_photob);
         new_picture.setOnClickListener(new View.OnClickListener() {

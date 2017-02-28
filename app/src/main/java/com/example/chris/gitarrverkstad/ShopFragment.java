@@ -39,6 +39,7 @@ public class ShopFragment extends Fragment {
     InstrumentList instrumentList;
     static final int CAM_REQUEST = 1;
     View currentView;
+    int newestInstrumentId;
     int value;
     @Nullable
     @Override
@@ -94,26 +95,32 @@ public class ShopFragment extends Fragment {
     }
 
     public void populateList(){
+        //boolean notdone = true;
         List<Instrument> instruments = instrumentList.getInstruments();
-       /* NodeList descList = doc.getElementsByTagName("beskrivning");
-        NodeList modelList = doc.getElementsByTagName("model");
-        NodeList priceList = doc.getElementsByTagName("pris");
-        NodeList creatorList = doc.getElementsByTagName("tillverkare");
-        NodeList idList = doc.getElementsByTagName("instrumentId");
-        NodeList prevownList = doc.getElementsByTagName("tidigareAgare");*/
-        //(String desc, int imageID, String model, double price, String creator, String prevown, String instrumentID)
-        for(int i = 0; i < instruments.size(); i++){
+        for(int i = 0; i < instruments.size(); i++) {
             galleryItems.add(new GalleryItem(
-                        instruments.get(i).getBeskrivning(),
-                        R.mipmap.ic_guitar_icon,
-                        instruments.get(i).getModel(),
-                        Integer.parseInt(instruments.get(i).getPris()),
-                        instruments.get(i).getTillverkare(),
-                        instruments.get(i).getTidigareAgare(),
-                        Integer.toString(instruments.get(i).getInstrumentId())
-                    ));
+                    instruments.get(i).getBeskrivning(),
+                    R.mipmap.ic_guitar_icon,
+                    instruments.get(i).getModel(),
+                    Integer.parseInt(instruments.get(i).getPris()),
+                    instruments.get(i).getTillverkare(),
+                    instruments.get(i).getTidigareAgare(),
+                    Integer.toString(instruments.get(i).getInstrumentId())
+            ));
+            /*if (i != instruments.get(i).getInstrumentId() && notdone) {
+                notdone = false;
+                newestInstrumentId = i;
+            }*/
         }
+        newestInstrumentId = -1;
+        for(int i = 1; i < instruments.size(); i++) {
+            if(instruments.get(i).getInstrumentId() > newestInstrumentId) {
+                newestInstrumentId = instruments.get(i).getInstrumentId();
+            }
+        }
+        newestInstrumentId = newestInstrumentId + 1;
     }
+
 
     public void populateFailList(String failmessage){
             galleryItems.add(new GalleryItem(
@@ -174,7 +181,9 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new NewShopItemFragment()).commit();
+                NewShopItemFragment frag = new NewShopItemFragment();
+                frag.setInstrumentId(newestInstrumentId);
+                fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
             }
         });
     }
