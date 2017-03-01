@@ -13,6 +13,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,8 +46,6 @@ public class NewShopItemFragment extends Fragment {
     private Uri imageUri;
     private LinearLayout linearLayout;
     int instrumentId;
-    Button saveButton;
-    Button cancelButton;
     EditText editTextDesc;
     EditText editTextModel;
     EditText editTextPrice;
@@ -57,42 +58,13 @@ public class NewShopItemFragment extends Fragment {
         linearLayout = (LinearLayout) currentView.findViewById(R.id.new_item_linear);
         ImageButton addPictureButton = (ImageButton) currentView.findViewById(R.id.new_picture_button);
         addPictureButton.setOnClickListener(cameraListener);
-        saveButton = (Button) currentView.findViewById(R.id.new_item_done);
-        cancelButton = (Button) currentView.findViewById(R.id.new_item_cancel);
         editTextDesc = (EditText) currentView.findViewById(R.id.new_item_desc);
         editTextCurrOwn = (EditText) currentView.findViewById(R.id.new_item_maker);
         editTextModel = (EditText) currentView.findViewById(R.id.new_item_model);
         editTextPrice = (EditText) currentView.findViewById(R.id.new_item_price);
         editTextPrevOwn = (EditText) currentView.findViewById(R.id.new_item_previous_owner);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                exitLayout();
-            }
-        });
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .client(new OkHttpClient())
-                        .addConverterFactory(SimpleXmlConverterFactory.create())
-                        .build();
-                InstrumentClient client = retrofit.create(InstrumentClient.class);
-                retrofit2.Call<Instrument> call = client.postInstrument(new Instrument(
-                        editTextDesc.getText().toString(),
-                        instrumentId,
-                        editTextModel.getText().toString(),
-                        editTextPrice.getText().toString(),
-                        editTextPrevOwn.getText().toString(),
-                        editTextCurrOwn.getText().toString())
-                );
-                call.enqueue(new CustomCallback());
-            }
-        });
+        setHasOptionsMenu(true);
         // Function? to load image array into imageview to display images
         // add textfields for information
         // add buttons to confirm item or discard it
@@ -136,6 +108,7 @@ public class NewShopItemFragment extends Fragment {
     public void setInstrumentId(int instrumentId){
         this.instrumentId = instrumentId;
     }
+
     public void exitLayout(){
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new ShopFragment()).commit();
@@ -151,5 +124,44 @@ public class NewShopItemFragment extends Fragment {
         public void onFailure(Call<Instrument> call, Throwable t) {
             exitLayout();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.new_shop_item_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.new_shop_item_menu_publish) {
+            String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(API_BASE_URL)
+                    .client(new OkHttpClient())
+                    .addConverterFactory(SimpleXmlConverterFactory.create())
+                    .build();
+            InstrumentClient client = retrofit.create(InstrumentClient.class);
+            retrofit2.Call<Instrument> call = client.postInstrument(new Instrument(
+                    editTextDesc.getText().toString(),
+                    instrumentId,
+                    editTextModel.getText().toString(),
+                    editTextPrice.getText().toString(),
+                    editTextPrevOwn.getText().toString(),
+                    editTextCurrOwn.getText().toString())
+            );
+            call.enqueue(new CustomCallback());
+        } else if (id == R.id.new_shop_item_menu_cancel) {
+            exitLayout();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

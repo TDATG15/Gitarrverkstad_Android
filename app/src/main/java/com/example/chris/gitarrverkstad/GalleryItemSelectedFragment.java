@@ -9,12 +9,16 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -34,9 +38,6 @@ public class GalleryItemSelectedFragment extends Fragment {
     private GalleryItem selectedItem;
     static final int CAM_REQUEST = 1;
     private ImageView imageView;
-    Button saveButton;
-    Button deleteButton;
-    Button cancelButton;
     EditText editTextDesc;
     EditText editTextPrice;
     EditText editTextModel;
@@ -46,9 +47,6 @@ public class GalleryItemSelectedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.edit_gallery_item_layout, container, false);
-        saveButton = (Button) currentView.findViewById(R.id.selectedGalleryItem_publishb);
-        deleteButton = (Button) currentView.findViewById(R.id.selectedGalleryItem_deleteb);
-        cancelButton = (Button) currentView.findViewById(R.id.selectedGalleryItem_cancelb);
         editTextModel = (EditText) currentView.findViewById(R.id.selectedGalleryItem_model);
         editTextModel.setText(selectedItem.getModel());
         editTextDesc = (EditText) currentView.findViewById(R.id.selectedGalleryItem_desc);
@@ -59,65 +57,8 @@ public class GalleryItemSelectedFragment extends Fragment {
         editTextPrevOwn.setText(selectedItem.getPrevown());
         editTextCurrentOwn = (EditText) currentView.findViewById(R.id.selectedGalleryItem_current_owner);
         editTextCurrentOwn.setText(selectedItem.getCreator());
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .client(new OkHttpClient())
-                        .addConverterFactory(SimpleXmlConverterFactory.create())
-                        .build();
-                InstrumentClient client = retrofit.create(InstrumentClient.class);
-                retrofit2.Call<Instrument> call = client.putInstrument(new Instrument(
-                        editTextDesc.getText().toString(),
-                        Integer.parseInt(selectedItem.getInstrumentID()),
-                        editTextModel.getText().toString(),
-                        editTextPrice.getText().toString(),
-                        editTextCurrentOwn.getText().toString(),
-                        editTextPrevOwn.getText().toString()), selectedItem.getInstrumentID());
-                call.enqueue(new Callback<Instrument>() {
-
-                    @Override
-                    public void onResponse(Call<Instrument> call, Response<Instrument> response) {
-                        exitLayout();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Instrument> call, Throwable t) {
-                        exitLayout();
-                    }
-
-                });
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .client(new OkHttpClient())
-                        .addConverterFactory(SimpleXmlConverterFactory.create())
-                        .build();
-                InstrumentClient client = retrofit.create(InstrumentClient.class);
-                retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
-                call.enqueue(new CustomCallback());
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exitLayout();
-            }
-        });
         registerClickCallback();
+        setHasOptionsMenu(true);
         return currentView;
     }
 
@@ -173,5 +114,68 @@ public class GalleryItemSelectedFragment extends Fragment {
         public void onFailure(Call<Instrument> call, Throwable t) {
             exitLayout();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.edit_shop_item_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.edit_shop_item_accept) {
+            String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(API_BASE_URL)
+                    .client(new OkHttpClient())
+                    .addConverterFactory(SimpleXmlConverterFactory.create())
+                    .build();
+            InstrumentClient client = retrofit.create(InstrumentClient.class);
+            retrofit2.Call<Instrument> call = client.putInstrument(new Instrument(
+                    editTextDesc.getText().toString(),
+                    Integer.parseInt(selectedItem.getInstrumentID()),
+                    editTextModel.getText().toString(),
+                    editTextPrice.getText().toString(),
+                    editTextCurrentOwn.getText().toString(),
+                    editTextPrevOwn.getText().toString()), selectedItem.getInstrumentID());
+            call.enqueue(new Callback<Instrument>() {
+
+                @Override
+                public void onResponse(Call<Instrument> call, Response<Instrument> response) {
+                    exitLayout();
+                }
+
+                @Override
+                public void onFailure(Call<Instrument> call, Throwable t) {
+                    exitLayout();
+                }
+
+            });
+        } else if (id == R.id.edit_shop_item_remove) {
+            String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(API_BASE_URL)
+                    .client(new OkHttpClient())
+                    .addConverterFactory(SimpleXmlConverterFactory.create())
+                    .build();
+            InstrumentClient client = retrofit.create(InstrumentClient.class);
+            retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
+            call.enqueue(new CustomCallback());
+        } else if (id == R.id.edit_shop_item_cancel) {
+
+            exitLayout();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

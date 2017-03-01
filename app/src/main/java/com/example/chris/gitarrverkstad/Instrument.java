@@ -3,6 +3,8 @@ package com.example.chris.gitarrverkstad;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.util.List;
+
 /**
  * Created by stefa_000 on 2017-02-28.
  */

@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,6 +54,7 @@ public class ShopFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
             e.printStackTrace();
         }
+        setHasOptionsMenu(true);
         return currentView;
     }
 
@@ -190,17 +194,6 @@ public class ShopFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
             }
         });
-
-        ImageView new_item_button = (ImageView) currentView.findViewById(R.id.new_item_button);
-        new_item_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                NewShopItemFragment frag = new NewShopItemFragment();
-                frag.setInstrumentId(newestInstrumentId);
-                fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
-            }
-        });
     }
 
     private File getFile() {
@@ -212,30 +205,27 @@ public class ShopFragment extends Fragment {
         File image_file = new File(folder, "cam_image.jpg");
         return image_file;
     }
-/*
-    public class XMLTask extends AsyncTask<String, Document, Document> {
 
-        @Override
-        protected Document doInBackground(String... params){
-            HttpXmlConnecter xmlconnecter;
-            Document doc = null;
-            try {
-                xmlconnecter = new HttpXmlConnecter(params[0]);
-                xmlconnecter.start();
-                //temp = temp + xmlhandler.toString();
-                //temp = temp + xmlhandler.getChildNodesTextContext("instrument", 0);
-                doc = xmlconnecter.getDoc();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-            return doc;
-        }
-        @Override
-        protected void onPostExecute(Document result) {
-            super.onPostExecute(result);
-            afterConnection(result);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.shop_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.new_item_menu) {
+            FragmentManager fragmentManager = getFragmentManager();
+            NewShopItemFragment frag = new NewShopItemFragment();
+            frag.setInstrumentId(newestInstrumentId);
+            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
         }
 
-    }*/
+        return super.onOptionsItemSelected(item);
+    }
 }

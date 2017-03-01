@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/new_shop_item_menu_publish"
+        android:title="Publicera">
+    </item>
+
+    <item
+        android:id="@+id/new_shop_item_menu_cancel"
+        android:title="Avbryt">
+    </item>
+
+</menu>
