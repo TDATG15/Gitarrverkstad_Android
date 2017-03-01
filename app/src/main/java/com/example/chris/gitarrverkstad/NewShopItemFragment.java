@@ -3,6 +3,7 @@ package com.example.chris.gitarrverkstad;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -158,6 +160,9 @@ public class NewShopItemFragment extends Fragment {
                     editTextCurrOwn.getText().toString())
             );
             call.enqueue(new CustomCallback());
+
+            Toast toast = Toast.makeText(currentView.getContext(), "Publicerad!", Toast.LENGTH_SHORT);
+            toast.show();
         } else if (id == R.id.new_shop_item_menu_cancel) {
             exitLayout();
         }

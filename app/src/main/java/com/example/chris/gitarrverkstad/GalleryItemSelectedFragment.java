@@ -151,6 +151,8 @@ public class GalleryItemSelectedFragment extends Fragment {
                 @Override
                 public void onResponse(Call<Instrument> call, Response<Instrument> response) {
                     exitLayout();
+                    Toast toast = Toast.makeText(currentView.getContext(), "Inlägg ändrad!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
 
                 @Override
@@ -171,8 +173,9 @@ public class GalleryItemSelectedFragment extends Fragment {
             InstrumentClient client = retrofit.create(InstrumentClient.class);
             retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
             call.enqueue(new CustomCallback());
+            Toast toast = Toast.makeText(currentView.getContext(), "Tog bort inlägg!", Toast.LENGTH_SHORT);
+            toast.show();
         } else if (id == R.id.edit_shop_item_cancel) {
-
             exitLayout();
         }
 
