@@ -130,6 +130,7 @@ public class GalleryItemSelectedFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.edit_shop_item_accept) {
+            //TODO: Accepting makes program crash, something with the text i think, might be that the server is down.
             String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
