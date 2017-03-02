@@ -25,7 +25,7 @@ public class Instrument {
     private String pris;
 
     @Element(name="tidigareagare")
-    private String tidigareAgare;
+    private String tidigareagare;
 
     @Element(name = "tillverkare")
     private String tillverkare;
@@ -63,11 +63,11 @@ public class Instrument {
     }
 
     public String getTidigareAgare() {
-        return tidigareAgare;
+        return tidigareagare;
     }
 
-    public void setTidigareAgare(String tidigareAgare) {
-        this.tidigareAgare = tidigareAgare;
+    public void setTidigareAgare(String tidigareagare) {
+        this.tidigareagare = tidigareagare;
     }
 
     public String getTillverkare() {
@@ -82,12 +82,12 @@ public class Instrument {
         super();
     }
 
-    public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareAgare, String tillverkare){
+    public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareagare, String tillverkare){
         this.beskrivning = beskrivning;
         this.instrumentId = instrumentId;
         this.model = model;
         this.pris = pris;
-        this.tidigareAgare = tidigareAgare;
+        this.tidigareagare = tidigareagare;
         this.tillverkare = tillverkare;
     }
 }

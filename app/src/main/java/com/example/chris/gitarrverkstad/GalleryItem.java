@@ -13,7 +13,7 @@ public class GalleryItem {
     private int imageID;
     private String prevown;
 
-    public GalleryItem(String desc, int imageID, String model, int price, String creator, String prevown, String instrumentID){
+    public GalleryItem(String desc, int imageID, String model, int price, String creator, String instrumentID, String prevown){
         this.price = price;
         this.desc = desc;
         this.model = model;

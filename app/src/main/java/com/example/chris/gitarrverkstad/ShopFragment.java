@@ -108,9 +108,8 @@ public class ShopFragment extends Fragment {
                     instruments.get(i).getModel(),
                     Integer.parseInt(instruments.get(i).getPris()),
                     instruments.get(i).getTillverkare(),
-                    instruments.get(i).getTidigareAgare(),
-                    Integer.toString(instruments.get(i).getInstrumentId())
-            ));
+                    Integer.toString(instruments.get(i).getInstrumentId()),
+                    instruments.get(i).getTidigareAgare()));
             /*if (i != instruments.get(i).getInstrumentId() && notdone) {
                 notdone = false;
                 newestInstrumentId = i;
@@ -148,8 +147,7 @@ public class ShopFragment extends Fragment {
                     "FAIL",
                     0,
                     "FAIL",
-                    "FAIL",
-                    "FAIL"
+                    "FAIL", "hej"
             ));
     }
 
