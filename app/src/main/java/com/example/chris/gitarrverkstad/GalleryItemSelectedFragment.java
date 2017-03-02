@@ -45,7 +45,7 @@ public class GalleryItemSelectedFragment extends Fragment {
     EditText editTextModel;
     EditText editTextPrevOwn;
     EditText editTextCurrentOwn;
-    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    private AlertDialog.Builder builder;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -131,6 +131,7 @@ public class GalleryItemSelectedFragment extends Fragment {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        builder = new AlertDialog.Builder(getActivity());
 
         if (id == R.id.edit_shop_item_accept) {
             //TODO: Accepting makes program crash, something with the text i think, might be that the server is down.
@@ -143,13 +144,15 @@ public class GalleryItemSelectedFragment extends Fragment {
                     .addConverterFactory(SimpleXmlConverterFactory.create())
                     .build();
             InstrumentClient client = retrofit.create(InstrumentClient.class);
+
             retrofit2.Call<Instrument> call = client.putInstrument(new Instrument(
                     editTextDesc.getText().toString(),
                     Integer.parseInt(selectedItem.getInstrumentID()),
                     editTextModel.getText().toString(),
                     editTextPrice.getText().toString(),
-                    editTextCurrentOwn.getText().toString(),
-                    selectedItem.getInstrumentID()));
+                    editTextPrevOwn.getText().toString(),
+                    editTextCurrentOwn.getText().toString()),
+                    selectedItem.getInstrumentID());
             call.enqueue(new Callback<Instrument>() {
 
                 @Override
