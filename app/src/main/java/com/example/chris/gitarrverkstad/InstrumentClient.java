@@ -31,7 +31,8 @@ public interface InstrumentClient {
     Call<Instrument> postInstrument(
             @Body Instrument instrument
     );
-
+/*
     @GET("/WebApplication6/webresources/testbokning.bokning")
     Call <Bookings> getCalendar();
+*/
 }

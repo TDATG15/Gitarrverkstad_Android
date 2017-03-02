@@ -36,7 +36,11 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,13 +91,37 @@ public class NewShopItemFragment extends Fragment {
         }
     };
 
+    public void uploadPhoto(){
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        UploadService service = new Retrofit.Builder().baseUrl("http://10.250.121.150:8080").client(client).build().create(UploadService.class);//http:10.250.121.150:8080"*/).client(client).build().create(UploadService.class);
+        File file = new File(imageUri.getPath());
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpg"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_text");
+        ;
+        retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
+        req.enqueue(new Callback<ResponseBody>(){
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                editTextDesc.setText("You did it");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                editTextDesc.setText(t.getMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
     //Take photo
     private void takePhoto(View v) {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         Date now = new Date();
-        String fileName = formatter.format(now) + ".jpg";
+        //String fileName = formatter.format(now) + ".jpg";
+        String fileName = "ins" + instrumentId + "d" + formatter.format(now) + ".jpg";
 
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName);
         imageUri = Uri.fromFile(photo);

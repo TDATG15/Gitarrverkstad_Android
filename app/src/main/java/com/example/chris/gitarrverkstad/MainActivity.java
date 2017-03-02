@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduleFragment()).commit();
         } else if (id == R.id.nav_shop) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ShopFragment()).commit();
-
         } else if (id == R.id.nav_economy) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new EconomyFragment()).commit();
         } else if (id == R.id.nav_send) {
