@@ -148,8 +148,8 @@ public class GalleryItemSelectedFragment extends Fragment {
                     Integer.parseInt(selectedItem.getInstrumentID()),
                     editTextModel.getText().toString(),
                     editTextPrice.getText().toString(),
-                    editTextCurrentOwn.getText().toString(),
-                    selectedItem.getInstrumentID()));
+                    editTextPrevOwn.getText().toString(),
+                    editTextCurrentOwn.getText().toString()), selectedItem.getInstrumentID().toString());
             call.enqueue(new Callback<Instrument>() {
 
                 @Override
