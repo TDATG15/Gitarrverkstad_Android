@@ -1,5 +1,6 @@
 package com.example.chris.gitarrverkstad;
 
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -13,21 +14,24 @@ import retrofit2.http.Path;
 
 public interface InstrumentClient {
     @GET("/ProjectEE-war/webresources/entities.instrument")
-    retrofit2.Call<InstrumentList> getInstruments();
+    Call<InstrumentList> getInstruments();
 
     @DELETE("/ProjectEE-war/webresources/entities.instrument/{index}")
-    retrofit2.Call<Instrument> deleteInstrument(
+    Call<Instrument> deleteInstrument(
             @Path("index") String index
     );
 
     @PUT("/ProjectEE-war/webresources/entities.instrument/{index}")
-    retrofit2.Call<Instrument> putInstrument(
+    Call<Instrument> putInstrument(
             @Body Instrument instrument,
             @Path("index") String index
     );
 
     @POST("/ProjectEE-war/webresources/entities.instrument")
-    retrofit2.Call<Instrument> postInstrument(
+    Call<Instrument> postInstrument(
             @Body Instrument instrument
     );
+
+    @GET("/WebApplication6/webresources/testbokning.bokning")
+    Call <Bookings> getCalendar();
 }

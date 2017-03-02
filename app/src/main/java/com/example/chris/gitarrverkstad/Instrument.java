@@ -24,7 +24,7 @@ public class Instrument {
     @Element(name = "pris")
     private String pris;
 
-    @Element(name="tidigareAgare")
+    @Element(name="tidigareagare")
     private String tidigareAgare;
 
     @Element(name = "tillverkare")
