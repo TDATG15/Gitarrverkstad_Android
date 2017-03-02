@@ -1,9 +1,12 @@
 package com.example.chris.gitarrverkstad;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -13,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +28,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -164,7 +170,15 @@ public class NewShopItemFragment extends Fragment {
             Toast toast = Toast.makeText(currentView.getContext(), "Publicerad!", Toast.LENGTH_SHORT);
             toast.show();
         } else if (id == R.id.new_shop_item_menu_cancel) {
-            exitLayout();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Är du säker på att du vill radera inlägget?")
+                    .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            exitLayout();
+                        }
+                    });
+            builder.create();
+            builder.show();
         }
 
         return super.onOptionsItemSelected(item);

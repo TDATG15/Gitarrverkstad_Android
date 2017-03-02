@@ -1,7 +1,9 @@
 package com.example.chris.gitarrverkstad;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -43,6 +45,7 @@ public class GalleryItemSelectedFragment extends Fragment {
     EditText editTextModel;
     EditText editTextPrevOwn;
     EditText editTextCurrentOwn;
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,7 +149,7 @@ public class GalleryItemSelectedFragment extends Fragment {
                     editTextModel.getText().toString(),
                     editTextPrice.getText().toString(),
                     editTextCurrentOwn.getText().toString(),
-                    editTextPrevOwn.getText().toString()), selectedItem.getInstrumentID());
+                    selectedItem.getInstrumentID()));
             call.enqueue(new Callback<Instrument>() {
 
                 @Override
@@ -163,21 +166,33 @@ public class GalleryItemSelectedFragment extends Fragment {
 
             });
         } else if (id == R.id.edit_shop_item_remove) {
-            String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(API_BASE_URL)
-                    .client(new OkHttpClient())
-                    .addConverterFactory(SimpleXmlConverterFactory.create())
-                    .build();
-            InstrumentClient client = retrofit.create(InstrumentClient.class);
-            retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
-            call.enqueue(new CustomCallback());
-            Toast toast = Toast.makeText(currentView.getContext(), "Tog bort inlägg!", Toast.LENGTH_SHORT);
-            toast.show();
+            builder.setMessage("Är du säker på att du vill avbryta ändringar?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(API_BASE_URL)
+                            .client(new OkHttpClient())
+                            .addConverterFactory(SimpleXmlConverterFactory.create())
+                            .build();
+                    InstrumentClient client = retrofit.create(InstrumentClient.class);
+                    retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
+                    call.enqueue(new CustomCallback());
+                    Toast toast = Toast.makeText(currentView.getContext(), "Tog bort inlägg!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+            builder.create();
+            builder.show();
         } else if (id == R.id.edit_shop_item_cancel) {
-            exitLayout();
+            builder.setMessage("Är du säker på att du vill radera inlägget?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    exitLayout();
+                }
+            });
+            builder.create();
+            builder.show();
         }
 
         return super.onOptionsItemSelected(item);
