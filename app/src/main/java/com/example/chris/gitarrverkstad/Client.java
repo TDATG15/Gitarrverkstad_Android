@@ -31,4 +31,24 @@ public interface Client {
     Call<Consultation> postConsultation(
             @Body Consultation consultationt
     );
+
+    @GET("/ProjectEE-war/webresources/entities.event")
+    Call<EventList> getEvent();
+
+    @DELETE("/ProjectEE-war/webresources/entities.event/{index}")
+    Call<Event> deleteEvent(
+            @Path("index") String index
+    );
+
+    @PUT("/ProjectEE-war/webresources/entities.event/{index}")
+    Call<Event> putEvent(
+            @Body Event event,
+            @Path("index") String index
+    );
+
+    @POST("/ProjectEE-war/webresources/entities.event")
+    Call<Event> postEvent(
+            @Body Event event
+    );
+
 }
