@@ -1,6 +1,7 @@
 package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.Service;
 import android.os.Build;
 import android.os.Bundle;
@@ -152,6 +153,41 @@ public class ScheduleFragment extends Fragment {
                 }
             }
             if(blocksDay.size() != 0) {
+                for(int j = 0; j < blocksDay.size(); j++){
+                    if (blocksDay.get(j).isEvent()) {
+                        int time = blocksDay.get(j).getTime();
+                        hours.get(i).get(time).setText("Arbete");
+                        int duration = Integer.parseInt(blocksDay.get(j).getEvent().getDuration());
+                        if(duration != 1){
+                            for(int k = 0; k < duration && (time + k) < hours.get(i).size(); k++){
+                                /*if(time + k >= hours.get(index).size()){
+                                 for(int m = 1; index + m < hours.size(); m++){
+                                    for(int n = 0; n < hours.get(index + m).size(); n++){
+                                        hours.get(index + m).get(n).setText("Arbete");
+                                        hours.get(index + m).get(n).setOnClickListener(createCustomClickListener(
+                                         blocksDay.get(index).getId(),
+                                        blocksDay.get(index).getType())
+                                     );
+                                    }
+                                    }
+                                }*/
+                                hours.get(i).get(time + k).setText("Arbete");
+                                hours.get(i).get(time + k).setOnClickListener(createCustomClickListener(
+                                        blocksDay.get(j).getId(),
+                                        blocksDay.get(j).getType())
+                                );
+                            }
+                            //addAdditionalHoursToEvent(duration, time, i, blocksDay);
+                        }
+                    }
+                    else {
+                        hours.get(i).get(blocksDay.get(j).getTime()).setText("Konsult");
+                    }
+                    hours.get(i).get(blocksDay.get(j).getTime()).setOnClickListener(createCustomClickListener(
+                            blocksDay.get(j).getId(),
+                            blocksDay.get(j).getType())
+                    );
+                }/*
                 for (int j = 0; j < hours.get(i).size(); j++) {
                     for (int m = 0; m < blocksDay.size(); m++) {
                         if (blocksDay.get(m).getTime() == j) {
@@ -162,8 +198,36 @@ public class ScheduleFragment extends Fragment {
                             }
                         }
                     }
-                }
+                }*/
             }
+        }
+    }
+
+    public CustomClickListener createCustomClickListener(int id, int type){
+        CustomClickListener tempClicker = new CustomClickListener();
+        tempClicker.setId(id);
+        tempClicker.setType(type);
+        return tempClicker;
+    }
+
+    public void addAdditionalHoursToEvent(int duration, int time, int index, List<TimeBlock> blocksDay){
+        for(int k = 0; k < duration && (time + k) < hours.get(index).size(); k++){
+            /*if(time + k >= hours.get(index).size()){
+                for(int m = 1; index + m < hours.size(); m++){
+                    for(int n = 0; n < hours.get(index + m).size(); n++){
+                        hours.get(index + m).get(n).setText("Arbete");
+                        hours.get(index + m).get(n).setOnClickListener(createCustomClickListener(
+                                blocksDay.get(index).getId(),
+                                blocksDay.get(index).getType())
+                        );
+                    }
+                }
+            }*/
+            hours.get(index).get(time + k).setText("Arbete");
+            hours.get(index).get(time + k).setOnClickListener(createCustomClickListener(
+                    blocksDay.get(index).getId(),
+                    blocksDay.get(index).getType())
+            );
         }
     }
 
@@ -234,6 +298,37 @@ public class ScheduleFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public class CustomClickListener implements View.OnClickListener{
+        private int id;
+        private int type;
+
+        @Override
+        public void onClick(View v) {
+            FragmentManager fragmentManager = getFragmentManager();
+            ScheduleEditFragment frag = new ScheduleEditFragment();
+            frag.setSelectedId(id);
+            frag.setSelectedType(type);
+            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+    }
+
     public class TimeBlock{
         private String day;
         private int time;
@@ -258,6 +353,14 @@ public class ScheduleFragment extends Fragment {
             this.day = day;
             this.time = time;
             this.event = event;
+        }
+
+        public int getId(){
+            if(isEvent()){
+                return event.getEventId();
+            } else {
+                return Integer.parseInt(consultation.getConId());
+            }
         }
 
         public Consultation getConsultation() {
@@ -290,6 +393,10 @@ public class ScheduleFragment extends Fragment {
 
         public String getDay() {
             return day;
+        }
+
+        public int getType() {
+            return type;
         }
 
         public void setDay(String day) {

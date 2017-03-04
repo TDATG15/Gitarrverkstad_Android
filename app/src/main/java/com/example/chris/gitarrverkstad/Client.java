@@ -16,6 +16,11 @@ public interface Client {
     @GET("/ProjectEE-war/webresources/entities.consultation")
     Call<ConsultationList> getConsultation();
 
+    @GET("/ProjectEE-war/webresources/entities.consultation/{index}")
+    Call<Consultation> getConsultationOfIndex(
+        @Path("index") String index
+    );
+
     @DELETE("/ProjectEE-war/webresources/entities.consultation/{index}")
     Call<Consultation> deleteConsultation(
             @Path("index") String index
@@ -34,6 +39,11 @@ public interface Client {
 
     @GET("/ProjectEE-war/webresources/entities.event")
     Call<EventList> getEvent();
+
+    @GET("/ProjectEE-war/webresources/entities.event/{index}")
+    Call<Event> getEventOfIndex(
+            @Path("index") String index
+    );
 
     @DELETE("/ProjectEE-war/webresources/entities.event/{index}")
     Call<Event> deleteEvent(
