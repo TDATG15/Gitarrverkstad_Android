@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -39,57 +40,59 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class ScheduleFragment extends Fragment {
     View currentView;
-    List<List<TextView>> hours;
+    /*List<List<TextView>> hours2;
+    List<List<Pair<TextView>>> hours;
     Calendar calender;
     List<String> days;
     ConsultationList consultationList;
     EventList eventList;
-    List<TimeBlock> timeBlocks;
+    List<TimeBlock> timeBlocks;*/
+    ScheduleContainer scheduleContainer;
     boolean eventsConnected = false;
-    /*List<TextView> viewHoursMon;
-    List<TextView> viewHoursTue;
-    List<TextView> viewHoursWen;
-    List<TextView> viewHoursThu;
-    List<TextView> viewHoursFri;*/
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.schedule_layout, container, false);
+        scheduleContainer = new ScheduleContainer(getFragmentManager());
         populateViewHours();
         setMondayDate();
-        getXmlInformation(false);
+        scheduleContainer.getXmlInformation();
+        //getXmlInformation();
         setHasOptionsMenu(true);
         return currentView;
     }
-
+/*
     public void afterConnection(){
         getXmlInformation(true);
     }
-
+*/
     public void setMondayDate(){
-        days = new ArrayList<String>();
-        calender = Calendar.getInstance();
-        calender.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        List<String> days = new ArrayList<String>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        days.add(formatter.format(calender.getTime()));
-        calender.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
-        days.add(formatter.format(calender.getTime()));
-        calender.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-        days.add(formatter.format(calender.getTime()));
-        calender.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
-        days.add(formatter.format(calender.getTime()));
-        calender.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        days.add(formatter.format(calender.getTime()));
-        calender.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        days.add(formatter.format(calender.getTime()));
-        calender.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        days.add(formatter.format(calender.getTime()));
+        days.add(formatter.format(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+        days.add(formatter.format(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        days.add(formatter.format(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        days.add(formatter.format(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        days.add(formatter.format(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        days.add(formatter.format(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        days.add(formatter.format(calendar.getTime()));
+        scheduleContainer.setDays(days);
+        scheduleContainer.setCalender(calendar);
     }
 
     public void populateViewHours(){
-        hours = new ArrayList<List<TextView>>();
-        List<TextView> templist = fillList("b");
+        List<List<Pair<TextView>>> hours = new ArrayList<List<Pair<TextView>>>();
+        //adding map
+        List<Pair<TextView>> templist = fillList("b");
         hours.add(templist);
         templist = fillList("c");
         hours.add(templist);
@@ -99,23 +102,35 @@ public class ScheduleFragment extends Fragment {
         hours.add(templist);
         templist = fillList("f");
         hours.add(templist);
+        scheduleContainer.setHours(hours);
+        /*
+        List<TextView> templist = fillList("b");
+        hours.add(templist);
+        templist = fillList("c");
+        hours.add(templist);
+        templist = fillList("d");
+        hours.add(templist);
+        templist = fillList("e");
+        hours.add(templist);
+        templist = fillList("f");
+        hours.add(templist);*/
     }
 
-    public List<TextView> fillList(String target){
-        List<TextView> templist = new ArrayList<TextView>();
+    public List<Pair<TextView>>  fillList(String target){
+        List<Pair<TextView>>  templist = new ArrayList<Pair<TextView>>();
         for(int i = 1; i < 9; i++) {
             int id = currentView.getContext().getResources().getIdentifier(
                     "test" + target + "text" + i,
                     "id",
                     currentView.getContext().getPackageName());
-            templist.add((TextView) currentView.findViewById(id));
+            templist.add(new Pair<TextView>((TextView) currentView.findViewById(id), -1));
         }
         for(int i = 0; i < templist.size(); i++) {
-            templist.get(i).setText("L");
+            templist.get(i).getType().setText("L");
         }
         return templist;
     }
-
+/*
     public void makeTimeBlocks(){
         timeBlocks = new ArrayList<TimeBlock>();
         StringBuilder stringBuilder = new StringBuilder("");
@@ -140,7 +155,8 @@ public class ScheduleFragment extends Fragment {
             timeBlocks.add(new TimeBlock(tempDate, time, eventList.getEvents().get(i)));
         }
     }
-
+*/
+    /*
     public void fillHoursWithBlocks(){
         List<TimeBlock> currentBlocks = timeBlocks;
 
@@ -153,65 +169,46 @@ public class ScheduleFragment extends Fragment {
                 }
             }
             if(blocksDay.size() != 0) {
-                for(int j = 0; j < blocksDay.size(); j++){
+                for(int j = 0; j < blocksDay.size(); j++) {
                     if (blocksDay.get(j).isEvent()) {
                         int time = blocksDay.get(j).getTime();
-                        hours.get(i).get(time).setText("Arbete");
+                        hours.get(i).get(time).getType().setText("Arbete");
+                        hours.get(i).get(time).setId(blocksDay.get(j).getId());
                         int duration = Integer.parseInt(blocksDay.get(j).getEvent().getDuration());
-                        if(duration != 1){
-                            for(int k = 0; k < duration && (time + k) < hours.get(i).size(); k++){
-                                /*if(time + k >= hours.get(index).size()){
-                                 for(int m = 1; index + m < hours.size(); m++){
-                                    for(int n = 0; n < hours.get(index + m).size(); n++){
-                                        hours.get(index + m).get(n).setText("Arbete");
-                                        hours.get(index + m).get(n).setOnClickListener(createCustomClickListener(
-                                         blocksDay.get(index).getId(),
-                                        blocksDay.get(index).getType())
-                                     );
-                                    }
-                                    }
-                                }*/
-                                hours.get(i).get(time + k).setText("Arbete");
-                                hours.get(i).get(time + k).setOnClickListener(createCustomClickListener(
+                        if (duration != 1) {
+                            for (int k = 0; k < duration && (time + k) < hours.get(i).size(); k++) {
+
+                                hours.get(i).get(time + k).getType().setText("Arbete");
+                                hours.get(i).get(time + k).setId(blocksDay.get(j).getId());
+                                hours.get(i).get(time + k).getType().setOnClickListener(createCustomClickListener(
                                         blocksDay.get(j).getId(),
                                         blocksDay.get(j).getType())
                                 );
                             }
-                            //addAdditionalHoursToEvent(duration, time, i, blocksDay);
                         }
+                    } else {
+                        hours.get(i).get(blocksDay.get(j).getTime()).getType().setText("Konsult");
+                        hours.get(i).get(blocksDay.get(j).getTime()).setId(Integer.parseInt(blocksDay.get(j).getConsultation().getConId()));
                     }
-                    else {
-                        hours.get(i).get(blocksDay.get(j).getTime()).setText("Konsult");
-                    }
-                    hours.get(i).get(blocksDay.get(j).getTime()).setOnClickListener(createCustomClickListener(
+                    hours.get(i).get(blocksDay.get(j).getTime()).getType().setOnClickListener(createCustomClickListener(
                             blocksDay.get(j).getId(),
                             blocksDay.get(j).getType())
                     );
-                }/*
-                for (int j = 0; j < hours.get(i).size(); j++) {
-                    for (int m = 0; m < blocksDay.size(); m++) {
-                        if (blocksDay.get(m).getTime() == j) {
-                            if (blocksDay.get(m).isEvent()) {
-                                hours.get(i).get(j).setText("Arbete");
-                            } else {
-                                hours.get(i).get(j).setText("Konsult");
-                            }
-                        }
-                    }
-                }*/
+                }
             }
         }
-    }
-
+    }*/
+/*
     public CustomClickListener createCustomClickListener(int id, int type){
         CustomClickListener tempClicker = new CustomClickListener();
         tempClicker.setId(id);
         tempClicker.setType(type);
         return tempClicker;
     }
-
+*/
+    /*
     public void addAdditionalHoursToEvent(int duration, int time, int index, List<TimeBlock> blocksDay){
-        for(int k = 0; k < duration && (time + k) < hours.get(index).size(); k++){
+        for(int k = 0; k < duration && (time + k) < hours.get(index).size(); k++){*/
             /*if(time + k >= hours.get(index).size()){
                 for(int m = 1; index + m < hours.size(); m++){
                     for(int n = 0; n < hours.get(index + m).size(); n++){
@@ -223,12 +220,17 @@ public class ScheduleFragment extends Fragment {
                     }
                 }
             }*/
-            hours.get(index).get(time + k).setText("Arbete");
-            hours.get(index).get(time + k).setOnClickListener(createCustomClickListener(
+    /*
+            hours.get(index).get(time + k).getType().setText("Arbete");
+            hours.get(index).get(time + k).getType().setOnClickListener(createCustomClickListener(
                     blocksDay.get(index).getId(),
                     blocksDay.get(index).getType())
             );
         }
+    }*/
+
+   /* public void getXmlInformation(){
+        getXmlInformation(false);
     }
 
     public void getXmlInformation(boolean getevents){
@@ -253,7 +255,7 @@ public class ScheduleFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<ConsultationList> call, Throwable t) {
-                    hours.get(0).get(0).setText(t.getMessage());
+                    hours.get(0).get(0).getType().setText(t.getMessage());
                 }
 
             });
@@ -267,18 +269,18 @@ public class ScheduleFragment extends Fragment {
                     makeTimeBlocks();
                     fillHoursWithBlocks();
                 }
-
                 @Override
                 public void onFailure(Call<EventList> call, Throwable t) {
-                    hours.get(0).get(0).setText(t.getMessage());
+                    hours.get(0).get(0).getType().setText(t.getMessage());
                 }
 
             });
         }
-    }
+    }*/
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.add("Lägg in arbete");
         for (int i = 1; i != 53; i++) {
             menu.add("Vecka " + i);
         }
@@ -292,12 +294,16 @@ public class ScheduleFragment extends Fragment {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //TODO: open selected week schedule
-
+        if(item.toString().equals("Lägg in arbete")){
+            FragmentManager fragManager = getFragmentManager();
+            ScheduleNewFragment frag =  new ScheduleNewFragment();
+            frag.setScheduleInterface(scheduleContainer);
+            fragManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+        }
         return super.onOptionsItemSelected(item);
     }
-
+/*
     public class CustomClickListener implements View.OnClickListener{
         private int id;
         private int type;
@@ -327,80 +333,6 @@ public class ScheduleFragment extends Fragment {
             this.type = type;
         }
 
-    }
+    }*/
 
-    public class TimeBlock{
-        private String day;
-        private int time;
-        private int type;
-        private Event event;
-        private Consultation consultation;
-
-        public TimeBlock(String day, int time) {
-            this.day = day;
-            this.time = time;
-        }
-
-        public TimeBlock(String day, int time, Consultation consultation) {
-            type = 1;
-            this.day = day;
-            this.time = time;
-            this.consultation = consultation;
-        }
-
-        public TimeBlock(String day, int time, Event event) {
-            type = 2;
-            this.day = day;
-            this.time = time;
-            this.event = event;
-        }
-
-        public int getId(){
-            if(isEvent()){
-                return event.getEventId();
-            } else {
-                return Integer.parseInt(consultation.getConId());
-            }
-        }
-
-        public Consultation getConsultation() {
-            return consultation;
-        }
-
-        public void setConsultation(Consultation consultation) {
-            this.consultation = consultation;
-        }
-
-        public Event getEvent() {
-            return event;
-        }
-
-        public void setEvent(Event event) {
-            this.event = event;
-        }
-
-        public boolean isEvent() {
-            return type == 2;
-        }
-
-        public int getTime() {
-            return time;
-        }
-
-        public void setTime(int time) {
-            this.time = time;
-        }
-
-        public String getDay() {
-            return day;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setDay(String day) {
-            this.day = day;
-        }
-    }
 }
