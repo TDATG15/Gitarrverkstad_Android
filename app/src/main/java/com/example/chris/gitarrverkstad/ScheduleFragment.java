@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -40,6 +41,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class ScheduleFragment extends Fragment {
     View currentView;
+    String text;
     /*List<List<TextView>> hours2;
     List<List<Pair<TextView>>> hours;
     Calendar calender;
@@ -58,6 +60,10 @@ public class ScheduleFragment extends Fragment {
         populateViewHours();
         setMondayDate();
         scheduleContainer.getXmlInformation();
+        if(text != null){
+            Toast.makeText(getActivity(), text,
+                    Toast.LENGTH_LONG).show();
+        }
         //getXmlInformation();
         setHasOptionsMenu(true);
         return currentView;

@@ -47,5 +47,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="10"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <Button
+            android:id="@+id/schedule_edit_cancelb"
+            android:background="#FFA500"
+            android:layout_weight="10"
+            android:padding="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Avbryt" />
+
+
+        <Button
+            android:id="@+id/schedule_edit_deleteb"
+            android:background="#FFA500"
+            android:layout_weight="10"
+            android:padding="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ta bort" />
+
+        <Button
+            android:id="@+id/schedule_edit_saveb"
+            android:background="#FFA500"
+            android:layout_weight="10"
+            android:padding="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Skapa" />
+
+    </LinearLayout>
 
 </LinearLayout>

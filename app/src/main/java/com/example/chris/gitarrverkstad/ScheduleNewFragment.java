@@ -30,11 +30,15 @@ public class ScheduleNewFragment extends Fragment {
         buttonCancel = (Button) currentView.findViewById(R.id.schedule_new_cancelb);
         buttonCreate = (Button) currentView.findViewById(R.id.schedule_new_createb);
         textDesc = (EditText) currentView.findViewById(R.id.schedule_new_desc);
+        textDesc.setText("");
         textEmail = (EditText) currentView.findViewById(R.id.schedule_new_email);
+        textEmail.setText("");
         textTel = (EditText) currentView.findViewById(R.id.schedule_new_tel);
+        textTel.setText("");
         textName = (EditText) currentView.findViewById(R.id.schedule_new_name);
         textName.setText("DENNA FUNKTION ÄR EJ KLAR. ANVÄND PÅ EGEN RISK");
         textDuration = (EditText) currentView.findViewById(R.id.schedule_new_duration);
+        textDuration.setText("");
         registerClickListeners();
         return currentView;
     }

@@ -48,6 +48,16 @@ public class Event {
         this.eventId = eventId;
     }
 
+    public Event(String date, String time, String email, String name, String tel, String desc, String duration) {
+        this.date = date;
+        this.time = time;
+        this.email = email;
+        this.name = name;
+        this.tel = tel;
+        this.desc = desc;
+        this.duration = duration;
+    }
+
     public String getDate() {
         return date;
     }

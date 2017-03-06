@@ -4,8 +4,11 @@ import android.app.FragmentManager;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -27,6 +30,12 @@ public class ScheduleContainer implements ScheduleInterface {
     EventList eventList;
     List<TimeBlock> timeBlocks;
     FragmentManager fragmentManager;
+
+    String availableTime;
+    String availableDate;
+    int newduration;
+    int time;
+    boolean done = false;
 
 
     public ScheduleContainer(FragmentManager fragmentManager){
@@ -200,8 +209,9 @@ public class ScheduleContainer implements ScheduleInterface {
         return tempClicker;
     }
 
-    public void exitLayout(){
+    public void exitLayout(String text){
         ScheduleFragment frag =  new ScheduleFragment();
+        frag.text = text;
         fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
     }
 
@@ -220,16 +230,142 @@ public class ScheduleContainer implements ScheduleInterface {
 
                 @Override
                 public void onResponse(Call<Event> call, Response<Event> response) {
-                    exitLayout();
+                    exitLayout(null);
                 }
 
                 @Override
                 public void onFailure(Call<Event> call, Throwable t) {
-                    exitLayout();
+                    exitLayout(t.getMessage());
                 }
 
-
             });
+    }
+
+    public void writeDateTimeToString(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        time = time + 10;
+        String string = Integer.toString(time);
+        if(string.length() > 2 || string.length() <= 0){
+            string = "00";
+        }
+        if(string.length() == 1){
+            string = "0" + time;
+        }
+        availableTime = "1970-01-01T" + string + ":00:00+01:00";
+        availableDate = dateFormat.format(date) + "T00:00:00+01:00";
+        done = true;
+    }
+
+    public void findAvailableTime(List<TimeBlock> times, Date date){
+        if( 0 > time ){
+            time = 0;
+        }
+        if(time > 7){
+            Date dt = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            c.add(Calendar.DATE, 1);
+            dt = c.getTime();
+            time = 0;
+            findAvailableDate(dt);
+        } else {
+            List<String> strings = new ArrayList<String>();
+            for (int i = 0; i < 8; i++) {
+                strings.add("A");
+            }
+            for (int i = 0; i < times.size(); i++) {
+                int temptime = times.get(i).getTime();
+                int duration = Integer.parseInt(times.get(i).getEvent().getDuration());
+                for (int j = 0; j < duration; j++) {
+                    if (temptime + j < 8) {
+                        strings.set(temptime + j, "T");
+                    }
+                }
+            }
+            boolean finished = true;
+            for (; time < strings.size(); time++) {
+                if (strings.get(time).equals("A")) {
+                    for (int i = 0; i < newduration; i++) {
+                        if (time + 1 == 8) {
+                            Date dt = new Date();
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(dt);
+                            c.add(Calendar.DATE, 1);
+                            dt = c.getTime();
+                            time = 0;
+                            findAvailableDate(dt);
+                        }
+                        else {
+                            if (strings.get(time + i).equals("T")) {
+                                finished = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (finished) {
+                        //time = j;
+                        break;
+                    }
+                    //findAvailableDate(dt, 0);
+                }
+            }
+            if (!finished) {
+                Date dt = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(dt);
+                c.add(Calendar.DATE, 1);
+                dt = c.getTime();
+                time = 0;
+                findAvailableDate(dt);
+            }
+
+
+            /*
+            int duration = 0;
+            int timesgeti = times.get(i).getTime();
+            if(times.get(i).isEvent()){
+                duration = Integer.parseInt(times.get(i).getEvent().getDuration());
+            } else {
+                duration = 1;
+            }
+            int temptime = timesgeti + duration;
+            if(temptime > 7){
+                Date dt = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(dt);
+                c.add(Calendar.DATE, 1);
+                dt = c.getTime();
+                findAvailableDate(dt, 0);
+            }
+            if(times.get(i).getTime() == time){
+                ++time;
+                i = 0;
+            }
+            }
+            */
+        }
+    }
+
+    public void findAvailableDate(Date nowDate){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat timeFormat = new SimpleDateFormat("HH");
+        String now = dateFormat.format(nowDate);
+        boolean dateAvailable = false;
+        List<TimeBlock> times = new ArrayList<TimeBlock>();
+        for(int i = 0; i < timeBlocks.size(); i++){
+            if(timeBlocks.get(i).getDay().equals(now)){
+                times.add(timeBlocks.get(i));
+            }/*
+            if(i == timeBlocks.size() - 1){
+                dateAvailable = true;
+            }*/
+        }
+        if(times.size() != 0) {
+            findAvailableTime(times, nowDate);
+        }
+        if(!done) {
+            writeDateTimeToString(nowDate);
+        }
     }
 
     @Override
@@ -241,10 +377,19 @@ public class ScheduleContainer implements ScheduleInterface {
                     id = eventList.getEvents().get(i).getEventId();
                 }
             }
-        } else{
-            id = 1;
+            id = id + 1;
+        } else {
+            id = 1000;
         }
-        Event event = new Event("2017-03-07T00:00:00+01:00" , "1970-01-01T15:00:00+01:00",  email, name, tel, desc, duration, id);
+        DateFormat timeFormat = new SimpleDateFormat("HH");
+        Date now = new Date();
+        time = Integer.parseInt(timeFormat.format(now)) + 1;
+        availableTime = "1970-01-01T10:00+01:00";
+        newduration = Integer.parseInt(duration);
+        time = time - 10;
+        findAvailableDate(now);
+        Event event = new Event(availableDate, availableTime,  email, name, tel, desc, duration, id);
+        //Event event = new Event("2017-03-08T10:00+01:00", "1970-01-01T15:00+01:00",  email, name, tel, desc, duration, 1003);
         postEvent(event);
     }
 

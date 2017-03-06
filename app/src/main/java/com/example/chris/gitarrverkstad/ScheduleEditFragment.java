@@ -1,11 +1,13 @@
 package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -32,7 +34,9 @@ public class ScheduleEditFragment extends Fragment{
     EditText editTextName;
     EditText editTextTel;
     TextView viewTextType;
-
+    Button cancelButton;
+    Button saveButton;
+    Button deleteButton;
 
     @Nullable
     @Override
@@ -46,7 +50,71 @@ public class ScheduleEditFragment extends Fragment{
         editTextTel = (EditText) currentView.findViewById(R.id.schedule_edit_tel);
         viewTextType = (TextView) currentView.findViewById(R.id.schedule_edit_type);
         connectXml();
+        cancelButton = (Button) currentView.findViewById(R.id.schedule_edit_cancelb);
+        saveButton = (Button) currentView.findViewById(R.id.schedule_edit_saveb);
+        deleteButton = (Button) currentView.findViewById(R.id.schedule_edit_deleteb);
+        registerCallback();
         return currentView;
+    }
+
+    public void exitLayout(){
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduleFragment()).commit();
+    }
+
+    public void registerCallback(){
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(SimpleXmlConverterFactory.create())
+                        .build();
+                Client client = retrofit.create(Client.class);
+                if (selectedType == 2) {
+                    retrofit2.Call<Event> call = client.deleteEvent(Integer.toString(selectedId));
+                    call.enqueue(new Callback<Event>() {
+
+                        @Override
+                        public void onResponse(Call<Event> call, Response<Event> response) {
+                            exitLayout();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Event> call, Throwable t) {
+                            exitLayout();
+                        }
+
+                    });
+                } else if (selectedType == 1){
+                    retrofit2.Call<Consultation> call = client.deleteConsultation(Integer.toString(selectedId));
+                    call.enqueue(new Callback<Consultation>() {
+
+                        @Override
+                        public void onResponse(Call<Consultation> call, Response<Consultation> response) {
+                            exitLayout();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Consultation> call, Throwable t) {
+                            exitLayout();
+                        }
+
+                    });
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitLayout();
+            }
+        });
     }
 
     public void afterConnection(Consultation consultation){
