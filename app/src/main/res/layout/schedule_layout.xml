@@ -27,7 +27,7 @@ android:layout_height="match_parent">
         />
 
     <TextView
-        android:id="@+id/testatext4"
+        android:id="@+id/testatext3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -35,7 +35,7 @@ android:layout_height="match_parent">
         />
 
     <TextView
-        android:id="@+id/testatext5"
+        android:id="@+id/testatext4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -43,7 +43,7 @@ android:layout_height="match_parent">
         />
 
     <TextView
-        android:id="@+id/testatext3"
+        android:id="@+id/testatext5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -64,6 +64,14 @@ android:layout_height="match_parent">
         android:layout_weight="11.11"
         android:text="16.00"
         />
+
+    <TextView
+        android:id="@+id/testatext8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="17.00"
+        />
 </LinearLayout>
 
 <LinearLayout
@@ -78,6 +86,7 @@ android:layout_height="match_parent">
         android:layout_weight="1"
         android:text="M"
         />
+
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testbtext1"
@@ -87,9 +96,20 @@ android:layout_height="match_parent">
         android:text="TEST"
         android:gravity="center"
         />
+
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testbtext2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.89"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
+        android:id="@+id/testbtext3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -114,16 +134,6 @@ android:layout_height="match_parent">
         android:layout_height="0dp"
         android:layout_weight="11.11"
         android:text="TEST"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:background="@drawable/back"
-        android:id="@+id/testbtext3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="11.11"
-        android:text="TEST"
         android:gravity="center"/>
 
     <TextView
@@ -138,6 +148,16 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testbtext7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
+        android:id="@+id/testbtext8"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -180,6 +200,16 @@ android:layout_height="match_parent">
 
     <TextView
         android:background="@drawable/back"
+        android:id="@+id/testctext3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
         android:id="@+id/testctext4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -191,16 +221,6 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testctext5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="11.11"
-        android:text="TEST"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:background="@drawable/back"
-        android:id="@+id/testctext3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -220,6 +240,16 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testctext7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
+        android:id="@+id/testctext8"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -262,6 +292,16 @@ android:layout_height="match_parent">
 
     <TextView
         android:background="@drawable/back"
+        android:id="@+id/testdtext3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
         android:id="@+id/testdtext4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -273,16 +313,6 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testdtext5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="11.11"
-        android:text="TEST"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:background="@drawable/back"
-        android:id="@+id/testdtext3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -302,6 +332,16 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testdtext7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
+        android:id="@+id/testdtext8"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -344,6 +384,16 @@ android:layout_height="match_parent">
 
     <TextView
         android:background="@drawable/back"
+        android:id="@+id/testetext3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
         android:id="@+id/testetext4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -355,16 +405,6 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testetext5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="11.11"
-        android:text="TEST"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:background="@drawable/back"
-        android:id="@+id/testetext3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -390,6 +430,16 @@ android:layout_height="match_parent">
         android:text="TEST"
         android:gravity="center"
         />
+
+    <TextView
+        android:background="@drawable/back"
+        android:id="@+id/testetext8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
 </LinearLayout>
 
 <LinearLayout
@@ -402,7 +452,7 @@ android:layout_height="match_parent">
         android:layout_width="match_parent"
         android:layout_height="12dp"
         android:layout_weight="1"
-        android:text="To"
+        android:text="F"
         />
     <TextView
         android:background="@drawable/back"
@@ -417,6 +467,16 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testftext2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
+        android:id="@+id/testftext3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
@@ -441,16 +501,6 @@ android:layout_height="match_parent">
         android:layout_height="0dp"
         android:layout_weight="11.11"
         android:text="TEST"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:background="@drawable/back"
-        android:id="@+id/testftext3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="11.11"
-        android:text="TEST"
         android:gravity="center"/>
 
     <TextView
@@ -466,6 +516,16 @@ android:layout_height="match_parent">
     <TextView
         android:background="@drawable/back"
         android:id="@+id/testftext7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11.11"
+        android:text="TEST"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:background="@drawable/back"
+        android:id="@+id/testftext8"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11.11"
