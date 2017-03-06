@@ -1,18 +1,25 @@
 package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
-import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -25,6 +32,11 @@ public class HomeFragment extends Fragment {
     private List<Appointment> appointments = new ArrayList<>();
     private List<Consultation> consultations = new ArrayList<>();
     private List<Event> events;
+    private ListView list;
+    private ArrayAdapter<Appointment> adapter;
+    private Date currentDate = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH");
 
     View currentView;
 
@@ -37,38 +49,26 @@ public class HomeFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*populateList();
-         */
-        populateListView();
-        registerClickCallback();
         return currentView;
     }
 
     private void populateList() {
-
-
-
-
-
-        for(int i = 0; i < events.size(); i++) {
-            for(int j = 0; j < consultations.size(); j++) {
-                //if((events.get(i).getDate()).equalsIgnoreCase(consultations.get(j).getDate()) && events.get(i).getTime().equalsIgnoreCase(consultations.get(j).getTime())) {
-                    appointments.add(new Appointment(
-                            consultations.get(j).getDate(),
-                            "Konsultation",
-                            consultations.get(j).getName(),
-                            consultations.get(j).getTime()));
-                /*}
-                else {*/
-                    appointments.add(new Appointment(
-                            events.get(i).getDate(),
-                            events.get(i).getDesc(),
-                            events.get(i).getName(),
-                            events.get(i).getTime()
-                    ));
-                //}
+        for (int i = 0; i != consultations.size(); i++) {
+            if (consultations.get(i).getDate().contains(dateFormat.format(currentDate))) {
+                appointments.add(new Appointment(
+                        consultations.get(i).getDate(), "Konsultation", consultations.get(i).getName(), consultations.get(i).getTime()
+                ));
             }
         }
+
+        for (int i = 0; i != events.size(); i++) {
+            if (events.get(i).getDate().contains(dateFormat.format(currentDate))) {
+                appointments.add(new Appointment(
+                        events.get(i).getDate(), events.get(i).getDesc(), events.get(i).getName(), events.get(i).getTime()
+                ));
+            }
+        }
+
 
         /*appointments.add(new Appointment("2017-02-28", "Hitta fel på gitarr", "Kalle Karlsson", "13:00"));
         appointments.add(new Appointment("2017-03-11", "Byt strängar på gitarr", "Pelle Persson", "14:00"));
@@ -78,8 +78,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateListView() {
-        ArrayAdapter<Appointment> adapter = new AppointmentListAdapter();
-        ListView list = (ListView) currentView.findViewById(R.id.next_appointment_list);
+        adapter = new AppointmentListAdapter();
+        list = (ListView) currentView.findViewById(R.id.next_appointment_list);
         list.setAdapter(adapter);
         if (appointments.size() > 0) {
             TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
@@ -178,11 +178,40 @@ public class HomeFragment extends Fragment {
     private void afterConnection(String failmessage){
         if(consultations != null) {
             populateList();
+            Collections.sort(appointments, new Comparator<Appointment>() {
+                @Override
+                public int compare(Appointment o1, Appointment o2) {
+                    return o1.getTime().compareTo(o2.getTime());
+                }
+            });
         }else{
             //populateFailList(failmessage);
         }
         populateListView();
         registerClickCallback();
+        updateTimer();
+    }
+
+    private void updateTimer() {
+        Timer timer = new Timer ();
+        TimerTask minuteTask = new TimerTask () {
+            @Override
+            public void run () {
+                if (!appointments.isEmpty()) {
+                    String time = appointments.get(0).getTime().substring(11, 13);
+                    String currentHour = timeFormat.format(currentDate);
+                    System.out.println(time);
+                    System.out.println(currentHour);
+                    if (Integer.parseInt(currentHour) > Integer.parseInt(time)) {
+                        System.out.println("TRUE");
+                        //appointments.remove(0);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        };
+        // schedule the task to run starting now and then every hour...
+        timer.schedule (minuteTask, 0l, 1000*60);
     }
 }
 
