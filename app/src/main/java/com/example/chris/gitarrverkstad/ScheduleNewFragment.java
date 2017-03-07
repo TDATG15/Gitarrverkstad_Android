@@ -36,7 +36,7 @@ public class ScheduleNewFragment extends Fragment {
         textTel = (EditText) currentView.findViewById(R.id.schedule_new_tel);
         textTel.setText("");
         textName = (EditText) currentView.findViewById(R.id.schedule_new_name);
-        textName.setText("DENNA FUNKTION ÄR EJ KLAR. ANVÄND PÅ EGEN RISK");
+        textName.setText("");
         textDuration = (EditText) currentView.findViewById(R.id.schedule_new_duration);
         textDuration.setText("");
         registerClickListeners();

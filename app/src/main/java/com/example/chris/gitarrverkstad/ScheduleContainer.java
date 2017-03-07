@@ -147,7 +147,7 @@ public class ScheduleContainer implements ScheduleInterface {
                     if (blocksDay.get(j).isEvent()) {
                         int time = blocksDay.get(j).getTime();
                         //hours.get(i).get(time).getType().setText("Arbete");
-                        setScheduleIfExists("Arbete", hours.get(i).get(time).getType(), exists);
+                        setScheduleIfExists("Nytt\nArbete", hours.get(i).get(time).getType(), exists);
                         hours.get(i).get(time).setId(blocksDay.get(j).getId());
                         int duration = Integer.parseInt(blocksDay.get(j).getEvent().getDuration());
                         if(duration != 1){
@@ -164,7 +164,12 @@ public class ScheduleContainer implements ScheduleInterface {
                                     }
                                 }*/
                                 //hours.get(i).get(time + k).getType().setText("Arbete");
-                                setScheduleIfExists("Arbete", hours.get(i).get(time + k).getType(), exists);
+                                if(k == 0){
+                                    setScheduleIfExists("Nytt\nArbete", hours.get(i).get(time + k).getType(), exists);
+                                }
+                                else {
+                                    setScheduleIfExists("Forts\nArbete", hours.get(i).get(time + k).getType(), exists);
+                                }
                                 hours.get(i).get(time + k).setId(blocksDay.get(j).getId());
                                 setClickListenerIfExists(blocksDay.get(j), hours.get(i).get(time + k).getType(), exists);
                                 /*hours.get(i).get(time + k).getType().setOnClickListener(createCustomClickListener(
@@ -211,6 +216,10 @@ public class ScheduleContainer implements ScheduleInterface {
 
     public void exitLayout(String text){
         ScheduleFragment frag =  new ScheduleFragment();
+        Calendar cal = Calendar.getInstance();
+        Date date = new Date();
+        cal.setTime(date);
+        frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
         frag.text = text;
         fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
     }
@@ -256,18 +265,24 @@ public class ScheduleContainer implements ScheduleInterface {
         done = true;
     }
 
+    public Date getAndAddToDate(Date date){
+        Date dt = date;
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, 1);
+        while(c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ){
+            c.add(Calendar.DATE, 1);
+        }
+        return c.getTime();
+    }
+
     public void findAvailableTime(List<TimeBlock> times, Date date){
         if( 0 > time ){
             time = 0;
         }
         if(time > 7){
-            Date dt = new Date();
-            Calendar c = Calendar.getInstance();
-            c.setTime(dt);
-            c.add(Calendar.DATE, 1);
-            dt = c.getTime();
             time = 0;
-            findAvailableDate(dt);
+            findAvailableDate(getAndAddToDate(date));
         } else {
             List<String> strings = new ArrayList<String>();
             for (int i = 0; i < 8; i++) {
@@ -285,15 +300,11 @@ public class ScheduleContainer implements ScheduleInterface {
             boolean finished = true;
             for (; time < strings.size(); time++) {
                 if (strings.get(time).equals("A")) {
-                    for (int i = 0; i < newduration; i++) {
-                        if (time >= 8) {
-                            Date dt = new Date();
-                            Calendar c = Calendar.getInstance();
-                            c.setTime(dt);
-                            c.add(Calendar.DATE, 1);
-                            dt = c.getTime();
+                    int i;
+                    for (i = 0; i < newduration; i++) {
+                        if (time + i >= 8) {
                             time = 0;
-                            findAvailableDate(dt);
+                            findAvailableDate(getAndAddToDate(date));
                         }
                         else {
                             if (strings.get(time + i).equals("T")) {
@@ -302,6 +313,11 @@ public class ScheduleContainer implements ScheduleInterface {
                             }
                         }
                     }
+
+                    if(i == newduration){
+                        finished = true;
+                    }
+
                     if (finished) {
                         //time = j;
                         break;
@@ -310,13 +326,8 @@ public class ScheduleContainer implements ScheduleInterface {
                 }
             }
             if (!finished || time == strings.size()) {
-                Date dt = new Date();
-                Calendar c = Calendar.getInstance();
-                c.setTime(dt);
-                c.add(Calendar.DATE, 1);
-                dt = c.getTime();
                 time = 0;
-                findAvailableDate(dt);
+                findAvailableDate(getAndAddToDate(date));
             }
 
 
@@ -368,8 +379,31 @@ public class ScheduleContainer implements ScheduleInterface {
         }
     }
 
+
+    @Override
+    public void createEventTimeDate(int time, Date date, String desc, String email, String tel, String name){
+        this.time = time;
+        int id = -1;
+        if(eventList.getEvents().size() != 0) {
+            for (int i = 0; i < eventList.getEvents().size(); i++) {
+                if (id < eventList.getEvents().get(i).getEventId()) {
+                    id = eventList.getEvents().get(i).getEventId();
+                }
+            }
+            id = id + 1;
+        } else {
+            id = 1000;
+        }
+        writeDateTimeToString(date);
+        Event event = new Event(availableDate, availableTime,  email, name, tel, desc, "1", id);
+        postEvent(event);
+    }
+
     @Override
     public void createEvent(String desc, String email, String tel, String name, String duration){
+        if(!duration.equals("1") && !duration.equals("2") && !duration.equals("3") && !duration.equals("4") && !duration.equals("5")  ){
+            duration = "1";
+        }
         int id = -1;
         if(eventList.getEvents().size() != 0) {
             for (int i = 0; i < eventList.getEvents().size(); i++) {

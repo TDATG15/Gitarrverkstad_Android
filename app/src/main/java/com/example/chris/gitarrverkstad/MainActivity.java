@@ -17,6 +17,12 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -48,7 +54,12 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
         } else if (id == R.id.nav_schedule) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduleFragment()).commit();
+            ScheduleFragment frag = new ScheduleFragment();
+            Calendar cal = Calendar.getInstance();
+            Date date = new Date();
+            cal.setTime(date);
+            frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
+            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
         } else if (id == R.id.nav_shop) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ShopFragment()).commit();
         } else if (id == R.id.nav_economy) {
