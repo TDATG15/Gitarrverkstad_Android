@@ -33,7 +33,7 @@
         android:id="@+id/selected_layout">
 
         <TextView
-            android:text="Time"
+            android:text="Tid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/selected_time"
@@ -42,7 +42,7 @@
             android:layout_marginTop="16dp" />
 
         <TextView
-            android:text="Customer Name"
+            android:text="Kund Namn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
@@ -51,7 +51,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:text="Description Name"
+            android:text="Beskrivning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/selected_desc"
