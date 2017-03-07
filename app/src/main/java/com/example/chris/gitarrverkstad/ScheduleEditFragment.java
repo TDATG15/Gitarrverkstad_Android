@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +29,8 @@ public class ScheduleEditFragment extends Fragment{
     View currentView;
     int selectedType;
     int selectedId;
+    Consultation newSelectedConsultation;
+    Event newSelectedEvent;
     Consultation selectedConsultation;
     Event selectedEvent;
     EditText editTextDesc;
@@ -59,10 +64,84 @@ public class ScheduleEditFragment extends Fragment{
 
     public void exitLayout(){
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduleFragment()).commit();
+        ScheduleFragment scheduleFragment  =new ScheduleFragment();
+        Calendar cal = Calendar.getInstance();
+        Date date = new Date();
+        cal.setTime(date);
+        scheduleFragment.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
+        fragmentManager.beginTransaction().replace(R.id.content_frame, scheduleFragment).commit();
     }
 
     public void registerCallback(){
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                //public Consultation(String date, String conId, String time, String name, String tel) {
+                String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(SimpleXmlConverterFactory.create())
+                        .build();
+                Client client = retrofit.create(Client.class);
+                if (selectedType == 2) {
+
+                    Event event = new Event(
+                            newSelectedEvent.getDate(),
+                            newSelectedEvent.getTime(),
+                            editTextEmail.getText().toString(),
+                            editTextName.getText().toString(),
+                            editTextTel.getText().toString(),
+                            editTextDesc.getText().toString(),
+                            newSelectedEvent.getDuration(),
+                            selectedId
+                    );
+                    retrofit2.Call<Event> call = client.putEvent(event, Integer.toString(selectedId));
+                    call.enqueue(new Callback<Event>() {
+
+                        @Override
+                        public void onResponse(Call<Event> call, Response<Event> response) {
+                            exitLayout();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Event> call, Throwable t) {
+                            exitLayout();
+                        }
+
+                    });
+                } else if (selectedType == 1){
+
+                    //public Consultation(String date, String conId, String time, String name, String tel) {
+                    Consultation consultation = new Consultation(
+                            newSelectedConsultation.getDate(),
+                            Integer.toString(selectedId),
+                            newSelectedConsultation.getTime(),
+                            editTextName.getText().toString(),
+                            editTextTel.getText().toString()
+                    );
+                    retrofit2.Call<Consultation> call = client.putConsultation(selectedConsultation, selectedConsultation.getConId());
+                    call.enqueue(new Callback<Consultation>() {
+
+                        @Override
+                        public void onResponse(Call<Consultation> call, Response<Consultation> response) {
+                            exitLayout();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Consultation> call, Throwable t) {
+                            exitLayout();
+                        }
+
+                    });
+                }
+            }
+        });
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,21 +197,23 @@ public class ScheduleEditFragment extends Fragment{
     }
 
     public void afterConnection(Consultation consultation){
+        newSelectedConsultation = consultation;
         editTextTel.setText(consultation.getTel());
         editTextDuration.setText("1 timme");
         editTextEmail.setText("");
         editTextDesc.setText("En konsultation med " + consultation.getName());
         editTextName.setText(consultation.getName());
-        viewTextType.setText("Konsultation");
+        viewTextType.setText("Konsultation kl " + newSelectedConsultation.getTime().substring(11, 13) + ":00");
     }
 
     public void afterConnection(Event event){
+        newSelectedEvent = event;
         editTextTel.setText(event.getTel());
         editTextDuration.setText(event.getDuration() + " timmar" );
         editTextEmail.setText(event.getEmail());
         editTextDesc.setText(event.getDesc());
         editTextName.setText(event.getName());
-        viewTextType.setText("Arbete");
+        viewTextType.setText("Arbete kl " + newSelectedEvent.getTime().substring(11, 13) + ":00");
 
     }
 

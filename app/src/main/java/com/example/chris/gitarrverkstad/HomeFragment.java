@@ -2,6 +2,7 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,8 +35,11 @@ public class HomeFragment extends Fragment {
     private List<Consultation> consultations = new ArrayList<>();
     private List<Event> events;
     private ListView list;
+    private TextView textView;
+    private ListView clickCallbackList;
     private ArrayAdapter<Appointment> adapter;
-    private Date currentDate = new Date();
+    private Date currentDate;
+    final private Handler handler = new Handler();
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH");
 
@@ -45,28 +49,52 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.home_layout, container, false);
+        adapter = new AppointmentListAdapter();
+        currentDate = new Date();
         try {
             ConnectXml();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        updateTimer();
         return currentView;
     }
 
     private void populateList() {
+        //String time = appointments.get(0).getTime().substring(11, 13);
+        int currentHour = Integer.parseInt(timeFormat.format(currentDate));
+        int duration = 0;
+        int time = 0;
+        if (!appointments.isEmpty()) {
+            appointments.clear();
+        }
         for (int i = 0; i != consultations.size(); i++) {
             if (consultations.get(i).getDate().contains(dateFormat.format(currentDate))) {
-                appointments.add(new Appointment(
-                        consultations.get(i).getDate(), "Konsultation", consultations.get(i).getName(), consultations.get(i).getTime()
-                ));
+                time = Integer.parseInt(consultations.get(i).getTime().substring(11, 13)) + 1;
+                duration = Integer.parseInt(consultations.get(i).getTime().substring(11, 13)) + 1;
+                if((time + duration) >= currentHour) {
+                    appointments.add(new Appointment(
+                            consultations.get(i).getDate(),
+                            "Konsultation",
+                            consultations.get(i).getName(),
+                            (time + ":00 - " + (time + duration) + ":00")
+                    ));
+                }
             }
         }
 
         for (int i = 0; i != events.size(); i++) {
             if (events.get(i).getDate().contains(dateFormat.format(currentDate))) {
-                appointments.add(new Appointment(
-                        events.get(i).getDate(), events.get(i).getDesc(), events.get(i).getName(), events.get(i).getTime()
-                ));
+                time = Integer.parseInt(events.get(i).getTime().substring(11, 13));
+                duration = Integer.parseInt(events.get(i).getDuration());
+                if((time + duration) > currentHour){
+                    appointments.add(new Appointment(
+                            events.get(i).getDate(),
+                            events.get(i).getDesc(),
+                            events.get(i).getName(),
+                            (time + ":00 - " + (time + duration) + ":00")
+                    ));
+                }
             }
         }
 
@@ -74,30 +102,36 @@ public class HomeFragment extends Fragment {
         /*appointments.add(new Appointment("2017-02-28", "Hitta fel på gitarr", "Kalle Karlsson", "13:00"));
         appointments.add(new Appointment("2017-03-11", "Byt strängar på gitarr", "Pelle Persson", "14:00"));
         appointments.add(new Appointment("2017-03-15", "Stämma en gitarr", "Lukas Lundqvist", "15:00"));
-        appointments.add(new Appointment("2017-02-28", "Konsultation", "Anton Andersson", "16:00"));
-        appointments.add(new Appointment("2017-03-11", "Byt strängar på gitarr", "Björn Björk", "17:00"));*/
+        appointments.add(new Appointment("2017-03-07", "Konsultation", "Anton Andersson", "16:00:00"));
+        appointments.add(new Appointment("2017-03-07", "Byt strängar på gitarr", "Björn Björk", "17:00:00"));*/
     }
 
     private void populateListView() {
-        adapter = new AppointmentListAdapter();
         list = (ListView) currentView.findViewById(R.id.next_appointment_list);
         list.setAdapter(adapter);
         if (appointments.size() > 0) {
-            TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
+            textView = (TextView) currentView.findViewById(R.id.selected_cust);
             textView.setText(appointments.get(0).getCustomer());
             textView = (TextView) currentView.findViewById(R.id.selected_desc);
             textView.setText(appointments.get(0).getDescription());
             textView = (TextView) currentView.findViewById(R.id.selected_time);
             textView.setText(appointments.get(0).getTime());
         }
+        else {
+            textView = (TextView) currentView.findViewById(R.id.selected_cust);
+            textView.setText("Kund namn");
+            textView = (TextView) currentView.findViewById(R.id.selected_desc);
+            textView.setText("Beskrivning");
+            textView = (TextView) currentView.findViewById(R.id.selected_time);
+            textView.setText("Tid");
+        }
     }
 
     private void registerClickCallback() {
-        ListView list = (ListView) currentView.findViewById(R.id.next_appointment_list);
+        clickCallbackList = (ListView) currentView.findViewById(R.id.next_appointment_list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                TextView textView = (TextView) currentView.findViewById(R.id.selected_cust);
                 textView.setText(appointments.get(position).getCustomer());
                 textView = (TextView) currentView.findViewById(R.id.selected_desc);
                 textView.setText(appointments.get(position).getDescription());
@@ -132,6 +166,9 @@ public class HomeFragment extends Fragment {
     private void ConnectXml() throws Exception{
         String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        /*Request request = new Request.Builder().url("http://andersverkstad.zapto.org:8080/ProjectEE-war/webresources/entities.event").head().build();
+        System.out.println("Header: " + request.header("user-agent"));*/
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .client(new OkHttpClient())
@@ -153,7 +190,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        OkHttpClient.Builder httpClient2 = new OkHttpClient.Builder();
         Retrofit retrofit2 = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .client(new OkHttpClient())
@@ -176,6 +212,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     private void afterConnection(String failmessage){
         if(consultations != null) {
             populateList();
@@ -192,26 +229,39 @@ public class HomeFragment extends Fragment {
         registerClickCallback();
     }
 
-    private void updateTimer() {
-        Timer timer = new Timer ();
-        TimerTask minuteTask = new TimerTask () {
-            @Override
-            public void run () {
-                if (!appointments.isEmpty()) {
-                    String time = appointments.get(0).getTime().substring(11, 13);
-                    String currentHour = timeFormat.format(currentDate);
-                    System.out.println(time);
-                    System.out.println(currentHour);
-                    if (Integer.parseInt(currentHour) > Integer.parseInt(time)) {
-                        System.out.println("TRUE");
-                        appointments.remove(0);
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        };
-        // schedule the task to run starting now and then every hour...
-        timer.schedule (minuteTask, 0l, 1000*60);
+   private void updateTimer() {
+       handler.postDelayed( new Runnable() {
+
+           @Override
+           public void run() {
+               if (!appointments.isEmpty()) {
+                   String time = appointments.get(0).getTime().substring(8, 10);
+                   currentDate = new Date();
+                   String currentHour = timeFormat.format(currentDate);
+                    System.out.println("Appointment time: " + time);
+                    System.out.println("Current hour: " + currentHour);
+                   if (Integer.parseInt(currentHour) > Integer.parseInt(time)) {
+                       System.out.println("TRUE");
+                       appointments.remove(0);
+                       adapter.notifyDataSetChanged();
+                   }
+                   if (appointments.size() > 0) {
+                       textView = (TextView) currentView.findViewById(R.id.selected_cust);
+                       textView.setText(appointments.get(0).getCustomer());
+                       textView = (TextView) currentView.findViewById(R.id.selected_desc);
+                       textView.setText(appointments.get(0).getDescription());
+                       textView = (TextView) currentView.findViewById(R.id.selected_time);
+                       textView.setText(appointments.get(0).getTime());
+                   }
+               }
+               try {
+                   ConnectXml();
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+               handler.postDelayed(this, 60 * 1000);
+           }
+       }, 60 * 1000 );
     }
 }
 

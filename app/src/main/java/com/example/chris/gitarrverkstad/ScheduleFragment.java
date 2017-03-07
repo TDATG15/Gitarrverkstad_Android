@@ -3,6 +3,7 @@ package com.example.chris.gitarrverkstad;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,13 +16,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by stefa_000 on 2017-02-10.
@@ -37,14 +52,20 @@ public class ScheduleFragment extends Fragment {
     ConsultationList consultationList;
     EventList eventList;
     List<TimeBlock> timeBlocks;*/
+    int week;
+
     ScheduleContainer scheduleContainer;
+    Calendar calendar;
     boolean eventsConnected = false;
+    //int handlingDay = Calendar.DAY_OF_WEEK;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.schedule_layout, container, false);
         scheduleContainer = new ScheduleContainer(getFragmentManager());
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.WEEK_OF_YEAR, week);
         populateViewHours();
         setMondayDate();
         scheduleContainer.getXmlInformation();
@@ -54,16 +75,26 @@ public class ScheduleFragment extends Fragment {
         }
         //getXmlInformation();
         setHasOptionsMenu(true);
+        if(week != 0) {
+            Toast.makeText(getActivity(), "Vecka " + week + "",
+                    Toast.LENGTH_LONG).show();
+        }
         return currentView;
     }
-/*
+
+
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    /*
     public void afterConnection(){
         getXmlInformation(true);
     }
 */
     public void setMondayDate(){
-        List<String> days = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
+        List<String> days = new ArrayList<String>();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         days.add(formatter.format(calendar.getTime()));
@@ -86,15 +117,20 @@ public class ScheduleFragment extends Fragment {
     public void populateViewHours(){
         List<List<Pair<TextView>>> hours = new ArrayList<List<Pair<TextView>>>();
         //adding map
-        List<Pair<TextView>> templist = fillList("b");
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        List<Pair<TextView>> templist = fillList("b", calendar.getTime());
         hours.add(templist);
-        templist = fillList("c");
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+        templist = fillList("c", calendar.getTime());
         hours.add(templist);
-        templist = fillList("d");
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        templist = fillList("d", calendar.getTime());
         hours.add(templist);
-        templist = fillList("e");
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        templist = fillList("e", calendar.getTime());
         hours.add(templist);
-        templist = fillList("f");
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        templist = fillList("f", calendar.getTime());
         hours.add(templist);
         scheduleContainer.setHours(hours);
         /*
@@ -110,7 +146,7 @@ public class ScheduleFragment extends Fragment {
         hours.add(templist);*/
     }
 
-    public List<Pair<TextView>>  fillList(String target){
+    public List<Pair<TextView>>  fillList(String target, Date date){
         List<Pair<TextView>>  templist = new ArrayList<Pair<TextView>>();
         for(int i = 1; i < 9; i++) {
             int id = currentView.getContext().getResources().getIdentifier(
@@ -121,6 +157,10 @@ public class ScheduleFragment extends Fragment {
         }
         for(int i = 0; i < templist.size(); i++) {
             templist.get(i).getType().setText("L");
+            CustomNewOnClickListener onClickListener = new CustomNewOnClickListener();
+            onClickListener.setIndex(i);
+            onClickListener.setDate(date);
+            templist.get(i).getType().setOnClickListener(onClickListener);
         }
         return templist;
     }
@@ -286,6 +326,7 @@ public class ScheduleFragment extends Fragment {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        //TODO: open selected week schedule
         if(item.toString().equals("Lägg in arbete")){
             FragmentManager fragManager = getFragmentManager();
             ScheduleNewFragment frag =  new ScheduleNewFragment();
@@ -300,19 +341,48 @@ public class ScheduleFragment extends Fragment {
             builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+
                     dialog.dismiss();
                 }
             });
             builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //TODO: View the selected week
+                    FragmentManager fragmentManager = getFragmentManager();
+                    ScheduleFragment scheduleFragment = new ScheduleFragment();
+                    scheduleFragment.setWeek(which);
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, scheduleFragment).commit();
                 }
             });
             builder.create();
             builder.show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class CustomNewOnClickListener implements View.OnClickListener{
+        private int index;
+        private Date date;
+
+
+        @Override
+        public void onClick(View v) {
+            FragmentManager fragmentManager = getFragmentManager();
+            ScheduleCustomNewFragment frag = new ScheduleCustomNewFragment();
+            frag.setIndex(index);
+            frag.setDate(date);
+            frag.setWeek(week);
+            frag.setScheduleInterface(scheduleContainer);
+            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+        }
+
+        public void setDate(Date date) {
+            this.date = date;
+        }
+
+        public void setIndex(int index){
+            this.index = index;
+        }
     }
 /*
     public class CustomClickListener implements View.OnClickListener{

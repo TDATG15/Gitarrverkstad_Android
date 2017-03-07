@@ -40,10 +40,25 @@ public class Event {
     public Event(String date, String time, String email, String name, String tel, String desc, String duration, int eventId) {
         this.date = date;
         this.time = time;
+        if(email == null || email.equals("")){
+            email = "ingen email";
+        }
         this.email = email;
+        if(name == null || name.equals("")){
+            name = "inget namn";
+        }
         this.name = name;
+        if(tel == null || tel.equals("")){
+            tel = "1000";
+        }
         this.tel = tel;
+        if(desc == null || desc.equals("")){
+            desc = "ingen beskrivning";
+        }
         this.desc = desc;
+        if(duration == null || duration.equals("")){
+            duration = "1";
+        }
         this.duration = duration;
         this.eventId = eventId;
     }
@@ -51,10 +66,25 @@ public class Event {
     public Event(String date, String time, String email, String name, String tel, String desc, String duration) {
         this.date = date;
         this.time = time;
+        if(email == null || email.equals("")){
+            email = "ingen email";
+        }
         this.email = email;
+        if(name == null || name.equals("")){
+            name = "inget namn";
+        }
         this.name = name;
+        if(tel == null || tel.equals("")){
+            tel = "1000";
+        }
         this.tel = tel;
+        if(desc == null || desc.equals("")){
+            desc = "ingen beskrivning";
+        }
         this.desc = desc;
+            if(duration == null || duration.equals("")){
+                duration = "1";
+            }
         this.duration = duration;
     }
 

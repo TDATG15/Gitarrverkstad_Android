@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  */
 
 public interface ScheduleInterface {
+    public void createEventTimeDate(int time, Date date, String desc, String email, String tel, String name);
     public void createEvent(String desc, String email, String tel, String name, String duration);
     public void getXmlInformation();
     public List<List<Pair<TextView>>> getHours();
