@@ -19,6 +19,7 @@ import java.util.Date;
 
 public class ScheduleNewFragment extends Fragment {
     View currentView;
+    private int week;
     private ScheduleInterface scheduleInterface;
     Button buttonCancel;
     Button buttonCreate;
@@ -50,11 +51,16 @@ public class ScheduleNewFragment extends Fragment {
     public void exitLayout(){
         FragmentManager fragmentManager = getFragmentManager();
         ScheduleFragment frag = new ScheduleFragment();
-        Calendar cal = Calendar.getInstance();
+        /*Calendar cal = Calendar.getInstance();
         Date date = new Date();
         cal.setTime(date);
-        frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
+        frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));*/
+        frag.setWeek(week);
         fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     public void registerClickListeners(){

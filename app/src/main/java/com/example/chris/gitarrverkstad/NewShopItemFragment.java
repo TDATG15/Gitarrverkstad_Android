@@ -2,27 +2,34 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -83,16 +90,16 @@ public class NewShopItemFragment extends Fragment {
             takePhoto(v);
         }
     };
-
-    /*
+/*
     public void uploadPhoto(){
         OkHttpClient client = new OkHttpClient.Builder().build();
-        Client service = new Retrofit.Builder().baseUrl("http://10.250.121.150:8080").client(client).build().create(Client.class);
+        UploadService service = new Retrofit.Builder().baseUrl("http://10.250.121.150:8080").client(client).build().create(UploadService.class);
         File file = new File(imageUri.getPath());
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpg"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_text");
-        retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(name, body);
+        ;
+        retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
         req.enqueue(new Callback<ResponseBody>(){
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -105,8 +112,7 @@ public class NewShopItemFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-    }
-    */
+    }*/
 
     //Take photo
     private void takePhoto(View v) {
@@ -188,8 +194,6 @@ public class NewShopItemFragment extends Fragment {
                     editTextCurrOwn.getText().toString())
             );
             call.enqueue(new CustomCallback());
-
-            //uploadPhoto();
 
             Toast toast = Toast.makeText(currentView.getContext(), "Publicerad!", Toast.LENGTH_SHORT);
             toast.show();
