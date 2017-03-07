@@ -2,7 +2,6 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,11 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
 import java.io.File;
-import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +33,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
  */
 
 public class ShopFragment extends Fragment {
-    private List<GalleryItem> galleryItems = new ArrayList<GalleryItem>();
+    private List<GalleryItem> galleryItems = new ArrayList<>();
     InstrumentList instrumentList;
     static final int CAM_REQUEST = 1;
     View currentView;
@@ -60,7 +55,6 @@ public class ShopFragment extends Fragment {
 
     private void ConnectXml() throws Exception{
         String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)

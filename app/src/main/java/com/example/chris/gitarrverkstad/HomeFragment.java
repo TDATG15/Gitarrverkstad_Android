@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -189,7 +190,6 @@ public class HomeFragment extends Fragment {
         }
         populateListView();
         registerClickCallback();
-        updateTimer();
     }
 
     private void updateTimer() {
@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment {
                     System.out.println(currentHour);
                     if (Integer.parseInt(currentHour) > Integer.parseInt(time)) {
                         System.out.println("TRUE");
-                        //appointments.remove(0);
+                        appointments.remove(0);
                         adapter.notifyDataSetChanged();
                     }
                 }

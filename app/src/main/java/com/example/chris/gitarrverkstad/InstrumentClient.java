@@ -13,6 +13,7 @@ import retrofit2.http.Path;
  */
 
 public interface InstrumentClient {
+
     @GET("/ProjectEE-war/webresources/entities.instrument")
     Call<InstrumentList> getInstruments();
 

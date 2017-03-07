@@ -16,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -169,7 +168,7 @@ public class GalleryItemSelectedFragment extends Fragment {
 
             });
         } else if (id == R.id.edit_shop_item_remove) {
-            builder.setMessage("Är du säker på att du vill avbryta ändringar?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            builder.setMessage("Är du säker på att du vill radera inlägget?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
@@ -188,7 +187,7 @@ public class GalleryItemSelectedFragment extends Fragment {
             builder.create();
             builder.show();
         } else if (id == R.id.edit_shop_item_cancel) {
-            builder.setMessage("Är du säker på att du vill radera inlägget?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            builder.setMessage("Är du säker på att du vill avbryta ändringar?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     exitLayout();

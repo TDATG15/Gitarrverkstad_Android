@@ -13,6 +13,7 @@ import retrofit2.http.Path;
  */
 
 public interface Client {
+
     @GET("/ProjectEE-war/webresources/entities.consultation")
     Call<ConsultationList> getConsultation();
 
