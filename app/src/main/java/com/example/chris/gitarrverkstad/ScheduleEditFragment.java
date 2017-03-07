@@ -31,6 +31,7 @@ public class ScheduleEditFragment extends Fragment{
     View currentView;
     int selectedType;
     int selectedId;
+    int week;
     Consultation newSelectedConsultation;
     Event newSelectedEvent;
     Consultation selectedConsultation;
@@ -71,10 +72,10 @@ public class ScheduleEditFragment extends Fragment{
         ScheduleFragment scheduleFragment  =new ScheduleFragment();
         //Calendar cal = Calendar.getInstance();
         //Calendar cal = GregorianCalendar.getInstance(Locale.FRANCE);
-        Calendar cal = Calendar.getInstance();
+       /*Calendar cal = Calendar.getInstance();
         Date date = new Date();
-        cal.setTime(date);
-        scheduleFragment.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
+        cal.setTime(date);*/
+        scheduleFragment.setWeek(week);
         fragmentManager.beginTransaction().replace(R.id.content_frame, scheduleFragment).commit();
     }
 
@@ -200,6 +201,10 @@ public class ScheduleEditFragment extends Fragment{
                 exitLayout();
             }
         });
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     public void afterConnection(Consultation consultation){

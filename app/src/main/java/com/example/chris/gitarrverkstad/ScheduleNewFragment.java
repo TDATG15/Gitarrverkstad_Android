@@ -67,7 +67,7 @@ public class ScheduleNewFragment extends Fragment {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleInterface.getXmlInformation();
+                scheduleInterface.getXmlInformation(week);
                 scheduleInterface.createEvent(
                         textDesc.getText().toString(),
                         textEmail.getText().toString(),

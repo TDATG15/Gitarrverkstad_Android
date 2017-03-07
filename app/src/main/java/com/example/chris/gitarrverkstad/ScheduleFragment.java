@@ -71,7 +71,7 @@ public class ScheduleFragment extends Fragment {
         Date date = calendar.getTime();
         populateViewHours();
         setMondayDate();
-        scheduleContainer.getXmlInformation();
+        scheduleContainer.getXmlInformation(week);
         if(text != null){
             Toast.makeText(getActivity(), text,
                     Toast.LENGTH_LONG).show();
@@ -160,10 +160,12 @@ public class ScheduleFragment extends Fragment {
         }
         for(int i = 0; i < templist.size(); i++) {
             templist.get(i).getType().setText("L");
-            CustomNewOnClickListener onClickListener = new CustomNewOnClickListener();
-            onClickListener.setIndex(i);
-            onClickListener.setDate(date);
-            templist.get(i).getType().setOnClickListener(onClickListener);
+            if(i != 0) {
+                CustomNewOnClickListener onClickListener = new CustomNewOnClickListener();
+                onClickListener.setIndex(i);
+                onClickListener.setDate(date);
+                templist.get(i).getType().setOnClickListener(onClickListener);
+            }
         }
         return templist;
     }

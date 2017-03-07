@@ -14,7 +14,7 @@ import java.util.List;
 public interface ScheduleInterface {
     public void createEventTimeDate(int time, Date date, String desc, String email, String tel, String name);
     public void createEvent(String desc, String email, String tel, String name, String duration);
-    public void getXmlInformation();
+    public void getXmlInformation(int week);
     public List<List<Pair<TextView>>> getHours();
     public void setHours(List<List<Pair<TextView>>> hours);
     public Calendar getCalender();
