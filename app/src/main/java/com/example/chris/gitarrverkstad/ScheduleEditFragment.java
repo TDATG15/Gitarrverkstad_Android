@@ -37,12 +37,13 @@ public class ScheduleEditFragment extends Fragment{
     Consultation selectedConsultation;
     Event selectedEvent;
     EditText editTextDesc;
-    EditText editTextDuration;
+    //EditText editTextDuration;
     EditText editTextEmail;
     EditText editTextName;
     EditText editTextTel;
     TextView viewTextType;
     TextView viewTextDate;
+    TextView viewTextDuration;
     Button cancelButton;
     Button saveButton;
     Button deleteButton;
@@ -52,7 +53,7 @@ public class ScheduleEditFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.schedule_edit_item_layout, container, false);
         editTextDesc = (EditText) currentView.findViewById(R.id.schedule_edit_desc);
-        editTextDuration = (EditText) currentView.findViewById(R.id.schedule_edit_duration);
+        viewTextDuration = (TextView) currentView.findViewById(R.id.schedule_edit_duration);
         editTextEmail= (EditText) currentView.findViewById(R.id.schedule_edit_email);
         editTextName = (EditText) currentView.findViewById(R.id.schedule_edit_name);
         editTextName.setText("Ingen kontakt med servern");
@@ -210,7 +211,7 @@ public class ScheduleEditFragment extends Fragment{
     public void afterConnection(Consultation consultation){
         newSelectedConsultation = consultation;
         editTextTel.setText(consultation.getTel());
-        editTextDuration.setText("1 timme");
+        viewTextDuration.setText("1 timme");
         editTextEmail.setText("");
         editTextDesc.setText("En konsultation med " + consultation.getName());
         editTextName.setText(consultation.getName());
@@ -221,7 +222,7 @@ public class ScheduleEditFragment extends Fragment{
     public void afterConnection(Event event){
         newSelectedEvent = event;
         editTextTel.setText(event.getTel());
-        editTextDuration.setText(event.getDuration() + " timmar");
+        viewTextDuration.setText(event.getDuration() + " timmar");
         editTextEmail.setText(event.getEmail());
         editTextDesc.setText(event.getDesc());
         editTextName.setText(event.getName());
