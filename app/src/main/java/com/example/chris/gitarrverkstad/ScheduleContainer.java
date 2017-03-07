@@ -286,7 +286,7 @@ public class ScheduleContainer implements ScheduleInterface {
             for (; time < strings.size(); time++) {
                 if (strings.get(time).equals("A")) {
                     for (int i = 0; i < newduration; i++) {
-                        if (time + 1 == 8) {
+                        if (time >= 8) {
                             Date dt = new Date();
                             Calendar c = Calendar.getInstance();
                             c.setTime(dt);
@@ -309,7 +309,7 @@ public class ScheduleContainer implements ScheduleInterface {
                     //findAvailableDate(dt, 0);
                 }
             }
-            if (!finished) {
+            if (!finished || time == strings.size()) {
                 Date dt = new Date();
                 Calendar c = Calendar.getInstance();
                 c.setTime(dt);
