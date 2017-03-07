@@ -301,7 +301,7 @@ public class ScheduleContainer implements ScheduleInterface {
             for (; time < strings.size(); time++) {
                 if (strings.get(time).equals("A")) {
                     int i;
-                    for (i = 0; i < newduration; i++) {
+                    for (i = 0; i < newduration && !done; i++) {
                         if (time + i >= 8) {
                             time = 0;
                             findAvailableDate(getAndAddToDate(date));
