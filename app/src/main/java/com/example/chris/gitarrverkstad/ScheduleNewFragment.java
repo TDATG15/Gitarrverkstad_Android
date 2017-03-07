@@ -1,6 +1,7 @@
 package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by stefa_000 on 2017-03-05.
@@ -43,6 +47,16 @@ public class ScheduleNewFragment extends Fragment {
         return currentView;
     }
 
+    public void exitLayout(){
+        FragmentManager fragmentManager = getFragmentManager();
+        ScheduleFragment frag = new ScheduleFragment();
+        Calendar cal = Calendar.getInstance();
+        Date date = new Date();
+        cal.setTime(date);
+        frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
+        fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+    }
+
     public void registerClickListeners(){
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +69,12 @@ public class ScheduleNewFragment extends Fragment {
                         textName.getText().toString(),
                         textDuration.getText().toString()
                 );
+            }
+        });
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitLayout();
             }
         });
     }
