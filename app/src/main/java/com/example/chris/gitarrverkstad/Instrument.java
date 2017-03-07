@@ -83,11 +83,26 @@ public class Instrument {
     }
 
     public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareagare, String tillverkare){
-        this.beskrivning = beskrivning;
+        if(beskrivning.equals(""))
+            this.beskrivning = "Beskrivning";
+        else
+            this.beskrivning = beskrivning;
         this.instrumentId = instrumentId;
-        this.model = model;
-        this.pris = pris;
-        this.tidigareagare = tidigareagare;
-        this.tillverkare = tillverkare;
+        if(model.equals(""))
+            this.model = "Modell";
+        else
+            this.model = model;
+        if(pris.equals(""))
+            this.pris = "Inget pris satt";
+        else
+            this.pris = pris;
+        if(tidigareagare.equals(""))
+            this.tidigareagare = "Tidigare ägare";
+        else
+            this.tidigareagare = tidigareagare;
+        if(tillverkare.equals(""))
+            this.tillverkare = "Tillverkare";
+        else
+            this.tillverkare = tillverkare;
     }
 }
