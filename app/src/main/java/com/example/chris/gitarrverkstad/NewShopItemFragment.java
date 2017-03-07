@@ -90,10 +90,10 @@ public class NewShopItemFragment extends Fragment {
             takePhoto(v);
         }
     };
-
+/*
     public void uploadPhoto(){
         OkHttpClient client = new OkHttpClient.Builder().build();
-        UploadService service = new Retrofit.Builder().baseUrl("http://10.250.121.150:8080").client(client).build().create(UploadService.class);//http:10.250.121.150:8080"*/).client(client).build().create(UploadService.class);
+        UploadService service = new Retrofit.Builder().baseUrl("http://10.250.121.150:8080").client(client).build().create(UploadService.class);
         File file = new File(imageUri.getPath());
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpg"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
@@ -112,7 +112,7 @@ public class NewShopItemFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-    }
+    }*/
 
     //Take photo
     private void takePhoto(View v) {

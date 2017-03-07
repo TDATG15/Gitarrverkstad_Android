@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -65,6 +67,8 @@ public class ScheduleEditFragment extends Fragment{
     public void exitLayout(){
         FragmentManager fragmentManager = getFragmentManager();
         ScheduleFragment scheduleFragment  =new ScheduleFragment();
+        //Calendar cal = Calendar.getInstance();
+        //Calendar cal = GregorianCalendar.getInstance(Locale.FRANCE);
         Calendar cal = Calendar.getInstance();
         Date date = new Date();
         cal.setTime(date);

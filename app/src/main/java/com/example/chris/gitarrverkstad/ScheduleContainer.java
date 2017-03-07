@@ -9,7 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -216,6 +218,8 @@ public class ScheduleContainer implements ScheduleInterface {
 
     public void exitLayout(String text){
         ScheduleFragment frag =  new ScheduleFragment();
+
+        //Calendar cal = GregorianCalendar.getInstance(Locale.FRANCE);
         Calendar cal = Calendar.getInstance();
         Date date = new Date();
         cal.setTime(date);
@@ -267,6 +271,9 @@ public class ScheduleContainer implements ScheduleInterface {
 
     public Date getAndAddToDate(Date date){
         Date dt = date;
+        //Calendar c = Calendar.getInstance();
+
+        //Calendar c = GregorianCalendar.getInstance(Locale.FRANCE);
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
         c.add(Calendar.DATE, 1);

@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_schedule) {
             ScheduleFragment frag = new ScheduleFragment();
             Calendar cal = Calendar.getInstance();
+            //Calendar cal = GregorianCalendar.getInstance(Locale.FRANCE);
             Date date = new Date();
             cal.setTime(date);
             frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));

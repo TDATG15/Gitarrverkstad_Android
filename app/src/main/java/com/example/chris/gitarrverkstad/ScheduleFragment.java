@@ -64,8 +64,11 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.schedule_layout, container, false);
         scheduleContainer = new ScheduleContainer(getFragmentManager());
+        //calendar = Calendar.getInstance();
+        //calendar = GregorianCalendar.getInstance(Locale.FRANCE);
         calendar = Calendar.getInstance();
         calendar.set(Calendar.WEEK_OF_YEAR, week);
+        Date date = calendar.getTime();
         populateViewHours();
         setMondayDate();
         scheduleContainer.getXmlInformation();
@@ -330,6 +333,7 @@ public class ScheduleFragment extends Fragment {
         if(item.toString().equals("Lägg in arbete")){
             FragmentManager fragManager = getFragmentManager();
             ScheduleNewFragment frag =  new ScheduleNewFragment();
+            frag.setWeek(week);
             frag.setScheduleInterface(scheduleContainer);
             fragManager.beginTransaction().replace(R.id.content_frame, frag).commit();
         } else if (item.toString().equals("Välj vecka")) {
