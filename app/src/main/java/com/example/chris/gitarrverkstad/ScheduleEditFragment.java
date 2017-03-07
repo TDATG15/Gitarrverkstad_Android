@@ -41,6 +41,7 @@ public class ScheduleEditFragment extends Fragment{
     EditText editTextName;
     EditText editTextTel;
     TextView viewTextType;
+    TextView viewTextDate;
     Button cancelButton;
     Button saveButton;
     Button deleteButton;
@@ -56,6 +57,7 @@ public class ScheduleEditFragment extends Fragment{
         editTextName.setText("Ingen kontakt med servern");
         editTextTel = (EditText) currentView.findViewById(R.id.schedule_edit_tel);
         viewTextType = (TextView) currentView.findViewById(R.id.schedule_edit_type);
+        viewTextDate = (TextView) currentView.findViewById(R.id.schedule_edit_date);
         connectXml();
         cancelButton = (Button) currentView.findViewById(R.id.schedule_edit_cancelb);
         saveButton = (Button) currentView.findViewById(R.id.schedule_edit_saveb);
@@ -208,17 +210,18 @@ public class ScheduleEditFragment extends Fragment{
         editTextDesc.setText("En konsultation med " + consultation.getName());
         editTextName.setText(consultation.getName());
         viewTextType.setText("Konsultation kl " + newSelectedConsultation.getTime().substring(11, 13) + ":00");
+        viewTextDate.setText(newSelectedConsultation.getDate().substring(0, 10));
     }
 
     public void afterConnection(Event event){
         newSelectedEvent = event;
         editTextTel.setText(event.getTel());
-        editTextDuration.setText(event.getDuration() + " timmar" );
+        editTextDuration.setText(event.getDuration() + " timmar");
         editTextEmail.setText(event.getEmail());
         editTextDesc.setText(event.getDesc());
         editTextName.setText(event.getName());
         viewTextType.setText("Arbete kl " + newSelectedEvent.getTime().substring(11, 13) + ":00");
-
+        viewTextDate.setText(newSelectedEvent.getDate().substring(0, 10));
     }
 
     public void connectXml() {

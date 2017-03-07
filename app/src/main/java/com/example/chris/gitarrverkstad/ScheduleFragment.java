@@ -339,7 +339,7 @@ public class ScheduleFragment extends Fragment {
         } else if (item.toString().equals("Välj vecka")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item);
-            for (int i = 0; i != 53; i++) {
+            for (int i = 1; i != 53; i++) {
                 arrayAdapter.add("v." + i);
             }
             builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -354,7 +354,7 @@ public class ScheduleFragment extends Fragment {
                 public void onClick(DialogInterface dialog, int which) {
                     FragmentManager fragmentManager = getFragmentManager();
                     ScheduleFragment scheduleFragment = new ScheduleFragment();
-                    scheduleFragment.setWeek(which);
+                    scheduleFragment.setWeek(which + 1);
                     fragmentManager.beginTransaction().replace(R.id.content_frame, scheduleFragment).commit();
                 }
             });
