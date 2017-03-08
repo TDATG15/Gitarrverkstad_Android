@@ -12,6 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/schedule_edit_date"
+        android:textStyle="bold"
+        android:text="Datum"
+        android:textSize="20dp"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/schedule_edit_name"
         android:padding="20dp"
@@ -23,6 +32,8 @@
         android:id="@+id/schedule_edit_tel"
         android:padding="20dp"
         android:hint="Telefonnummer"
+        android:inputType="phone"
+        android:ems="10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -40,12 +51,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
+    <TextView
         android:id="@+id/schedule_edit_duration"
-        android:padding="20dp"
-        android:hint="Antal timmar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="timmar"
+        android:textSize="20dp"
+        android:padding="20dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"

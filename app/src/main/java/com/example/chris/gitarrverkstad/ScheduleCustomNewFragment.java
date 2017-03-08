@@ -57,7 +57,7 @@ public class ScheduleCustomNewFragment extends Fragment {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleInterface.getXmlInformation();
+                scheduleInterface.getXmlInformation(week);
                 scheduleInterface.createEventTimeDate(
                         index,
                         date,

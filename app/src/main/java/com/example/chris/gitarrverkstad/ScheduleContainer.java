@@ -37,11 +37,17 @@ public class ScheduleContainer implements ScheduleInterface {
     String availableDate;
     int newduration;
     int time;
+    int week;
     boolean done = false;
 
 
     public ScheduleContainer(FragmentManager fragmentManager){
         this.fragmentManager = fragmentManager;
+        Calendar cal = Calendar.getInstance();
+        //Calendar cal = GregorianCalendar.getInstance(Locale.FRANCE);
+        Date date = new Date();
+        cal.setTime(date);
+        week = cal.get(Calendar.WEEK_OF_YEAR);
     }
 
     public void afterConnection(){
@@ -220,10 +226,11 @@ public class ScheduleContainer implements ScheduleInterface {
         ScheduleFragment frag =  new ScheduleFragment();
 
         //Calendar cal = GregorianCalendar.getInstance(Locale.FRANCE);
-        Calendar cal = Calendar.getInstance();
+        /*Calendar cal = Calendar.getInstance();
         Date date = new Date();
         cal.setTime(date);
-        frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
+        frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));*/
+        frag.setWeek(week);
         frag.text = text;
         fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
     }
@@ -284,11 +291,11 @@ public class ScheduleContainer implements ScheduleInterface {
     }
 
     public void findAvailableTime(List<TimeBlock> times, Date date){
-        if( 0 > time ){
-            time = 0;
+        if( 1 > time ){
+            time = 1;
         }
         if(time > 7){
-            time = 0;
+            time = 1;
             findAvailableDate(getAndAddToDate(date));
         } else {
             List<String> strings = new ArrayList<String>();
@@ -310,7 +317,7 @@ public class ScheduleContainer implements ScheduleInterface {
                     int i;
                     for (i = 0; i < newduration && !done; i++) {
                         if (time + i >= 8) {
-                            time = 0;
+                            time = 1;
                             findAvailableDate(getAndAddToDate(date));
                         }
                         else {
@@ -333,7 +340,7 @@ public class ScheduleContainer implements ScheduleInterface {
                 }
             }
             if (!finished || time == strings.size()) {
-                time = 0;
+                time = 1;
                 findAvailableDate(getAndAddToDate(date));
             }
 
@@ -435,7 +442,8 @@ public class ScheduleContainer implements ScheduleInterface {
     }
 
     @Override
-    public void getXmlInformation(){
+    public void getXmlInformation(int week){
+        this.week = week;
         getXmlInformation(false);
     }
 
@@ -520,6 +528,7 @@ public class ScheduleContainer implements ScheduleInterface {
             ScheduleEditFragment frag =  new ScheduleEditFragment();
             frag.setSelectedId(id);
             frag.setSelectedType(type);
+            frag.setWeek(week);
             fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
         }
 

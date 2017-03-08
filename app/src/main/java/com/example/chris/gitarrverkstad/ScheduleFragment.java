@@ -71,7 +71,7 @@ public class ScheduleFragment extends Fragment {
         Date date = calendar.getTime();
         populateViewHours();
         setMondayDate();
-        scheduleContainer.getXmlInformation();
+        scheduleContainer.getXmlInformation(week);
         if(text != null){
             Toast.makeText(getActivity(), text,
                     Toast.LENGTH_LONG).show();
@@ -160,10 +160,12 @@ public class ScheduleFragment extends Fragment {
         }
         for(int i = 0; i < templist.size(); i++) {
             templist.get(i).getType().setText("L");
-            CustomNewOnClickListener onClickListener = new CustomNewOnClickListener();
-            onClickListener.setIndex(i);
-            onClickListener.setDate(date);
-            templist.get(i).getType().setOnClickListener(onClickListener);
+            if(i != 0) {
+                CustomNewOnClickListener onClickListener = new CustomNewOnClickListener();
+                onClickListener.setIndex(i);
+                onClickListener.setDate(date);
+                templist.get(i).getType().setOnClickListener(onClickListener);
+            }
         }
         return templist;
     }
@@ -339,7 +341,7 @@ public class ScheduleFragment extends Fragment {
         } else if (item.toString().equals("Välj vecka")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item);
-            for (int i = 0; i != 53; i++) {
+            for (int i = 1; i != 53; i++) {
                 arrayAdapter.add("v." + i);
             }
             builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -354,7 +356,7 @@ public class ScheduleFragment extends Fragment {
                 public void onClick(DialogInterface dialog, int which) {
                     FragmentManager fragmentManager = getFragmentManager();
                     ScheduleFragment scheduleFragment = new ScheduleFragment();
-                    scheduleFragment.setWeek(which);
+                    scheduleFragment.setWeek(which + 1);
                     fragmentManager.beginTransaction().replace(R.id.content_frame, scheduleFragment).commit();
                 }
             });

@@ -23,6 +23,8 @@
         android:id="@+id/schedule_new_tel"
         android:padding="20dp"
         android:hint="Telefonnummer"
+        android:inputType="phone"
+        android:ems="10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -44,6 +46,8 @@
         android:id="@+id/schedule_new_duration"
         android:padding="20dp"
         android:hint="Antal timmar"
+        android:inputType="numberSigned"
+        android:ems="10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
