@@ -2,6 +2,7 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -50,7 +51,10 @@ public class ScheduleCustomNewFragment extends Fragment {
         ScheduleFragment frag = new ScheduleFragment();
         frag.setWeek(week);
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, frag);
+        //fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     public void registerOnClickCallback(){

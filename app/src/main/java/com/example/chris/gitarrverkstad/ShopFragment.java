@@ -2,6 +2,7 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -176,7 +177,10 @@ public class ShopFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 GalleryItemSelectedFragment frag = new GalleryItemSelectedFragment();
                 frag.setSelectedItem(galleryItems.get(position));
-                fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, frag);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }
@@ -208,7 +212,10 @@ public class ShopFragment extends Fragment {
             FragmentManager fragmentManager = getFragmentManager();
             NewShopItemFragment frag = new NewShopItemFragment();
             frag.setInstrumentId(newestInstrumentId);
-            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame, frag);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
 
         return super.onOptionsItemSelected(item);

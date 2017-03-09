@@ -2,6 +2,7 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -77,7 +78,10 @@ public class ScheduleEditFragment extends Fragment{
         Date date = new Date();
         cal.setTime(date);*/
         scheduleFragment.setWeek(week);
-        fragmentManager.beginTransaction().replace(R.id.content_frame, scheduleFragment).commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, scheduleFragment);
+        //fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     public void registerCallback(){
@@ -210,24 +214,28 @@ public class ScheduleEditFragment extends Fragment{
 
     public void afterConnection(Consultation consultation){
         newSelectedConsultation = consultation;
-        editTextTel.setText(consultation.getTel());
-        viewTextDuration.setText("1 timme");
-        editTextEmail.setText("");
-        editTextDesc.setText("En konsultation med " + consultation.getName());
-        editTextName.setText(consultation.getName());
-        viewTextType.setText("Konsultation kl " + newSelectedConsultation.getTime().substring(11, 13) + ":00");
-        viewTextDate.setText(newSelectedConsultation.getDate().substring(0, 10));
+        if(newSelectedConsultation != null) {
+            editTextTel.setText(consultation.getTel());
+            viewTextDuration.setText("1 timme");
+            editTextEmail.setText("");
+            editTextDesc.setText("En konsultation med " + consultation.getName());
+            editTextName.setText(consultation.getName());
+            viewTextType.setText("Konsultation kl " + newSelectedConsultation.getTime().substring(11, 13) + ":00");
+            viewTextDate.setText(newSelectedConsultation.getDate().substring(0, 10));
+        }
     }
 
     public void afterConnection(Event event){
         newSelectedEvent = event;
-        editTextTel.setText(event.getTel());
-        viewTextDuration.setText(event.getDuration() + " timmar");
-        editTextEmail.setText(event.getEmail());
-        editTextDesc.setText(event.getDesc());
-        editTextName.setText(event.getName());
-        viewTextType.setText("Arbete kl " + newSelectedEvent.getTime().substring(11, 13) + ":00");
-        viewTextDate.setText(newSelectedEvent.getDate().substring(0, 10));
+        if(newSelectedEvent != null) {
+            editTextTel.setText(event.getTel());
+            viewTextDuration.setText(event.getDuration() + " timmar");
+            editTextEmail.setText(event.getEmail());
+            editTextDesc.setText(event.getDesc());
+            editTextName.setText(event.getName());
+            viewTextType.setText("Arbete kl " + newSelectedEvent.getTime().substring(11, 13) + ":00");
+            viewTextDate.setText(newSelectedEvent.getDate().substring(0, 10));
+        }
     }
 
     public void connectXml() {

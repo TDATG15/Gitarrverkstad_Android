@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -147,7 +148,10 @@ public class NewShopItemFragment extends Fragment {
 
     public void exitLayout(){
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new ShopFragment()).commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, new ShopFragment());
+        //fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     public class CustomCallback implements Callback<Instrument>{

@@ -2,6 +2,7 @@ package com.example.chris.gitarrverkstad;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -56,7 +57,9 @@ public class ScheduleNewFragment extends Fragment {
         cal.setTime(date);
         frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));*/
         frag.setWeek(week);
-        fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, frag);
+        fragmentTransaction.commit();
     }
 
     public void setWeek(int week) {

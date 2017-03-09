@@ -181,8 +181,10 @@ public class HomeFragment extends Fragment {
         consultCall.enqueue(new Callback<ConsultationList>() {
             @Override
             public void onResponse(Call<ConsultationList> call, Response<ConsultationList> response) {
-                ConsultationList consultationList = response.body();
-                consultations = consultationList.getConsultationList();
+                if(response.body() != null) {
+                    ConsultationList consultationList = response.body();
+                    consultations = consultationList.getConsultationList();
+                }
 
             }
 
@@ -202,9 +204,11 @@ public class HomeFragment extends Fragment {
         eventListCall.enqueue(new Callback<EventList>() {
             @Override
             public void onResponse(Call<EventList> call, Response<EventList> response) {
-                EventList eventList = response.body();
-                events = eventList.getEvents();
-                afterConnection(null);
+                if(response.body() != null) {
+                    EventList eventList = response.body();
+                    events = eventList.getEvents();
+                    afterConnection(null);
+                }
             }
 
             @Override
