@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,11 +18,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,13 +67,12 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i != consultations.size(); i++) {
             if (consultations.get(i).getDate().contains(dateFormat.format(currentDate))) {
                 time = Integer.parseInt(consultations.get(i).getTime().substring(11, 13)) + 1;
-                duration = Integer.parseInt(consultations.get(i).getTime().substring(11, 13)) + 1;
-                if((time + duration) >= currentHour) {
+                if((time + 1) >= currentHour) {
                     appointments.add(new Appointment(
                             consultations.get(i).getDate(),
                             "Konsultation",
                             consultations.get(i).getName(),
-                            (time + ":00 - " + (time + duration) + ":00")
+                            (time + ":00 - " + (time + 1) + ":00")
                     ));
                 }
             }
@@ -237,9 +232,12 @@ public class HomeFragment extends Fragment {
    private void updateTimer() {
        handler.postDelayed( new Runnable() {
 
+           TextView emptyListText = (TextView) currentView.findViewById(R.id.if_empty_list_textview);
+
            @Override
            public void run() {
                if (!appointments.isEmpty()) {
+                   emptyListText.setText("");
                    String time = appointments.get(0).getTime().substring(8, 10);
                    currentDate = new Date();
                    String currentHour = timeFormat.format(currentDate);
@@ -258,6 +256,10 @@ public class HomeFragment extends Fragment {
                        textView = (TextView) currentView.findViewById(R.id.selected_time);
                        textView.setText(appointments.get(0).getTime());
                    }
+               } else {
+                   emptyListText.setText("Inga bokningar just nu");
+                   adapter.notifyDataSetChanged();
+                   System.out.println("laksnflknsf");
                }
                try {
                    ConnectXml();
@@ -266,7 +268,7 @@ public class HomeFragment extends Fragment {
                }
                handler.postDelayed(this, 60 * 1000);
            }
-       }, 60 * 1000 );
+       }, 0);
     }
 }
 
