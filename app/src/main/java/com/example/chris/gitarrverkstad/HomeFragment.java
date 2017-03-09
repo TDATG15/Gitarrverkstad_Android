@@ -132,6 +132,7 @@ public class HomeFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                textView = (TextView) currentView.findViewById(R.id.selected_cust);
                 textView.setText(appointments.get(position).getCustomer());
                 textView = (TextView) currentView.findViewById(R.id.selected_desc);
                 textView.setText(appointments.get(position).getDescription());
