@@ -544,7 +544,7 @@ public class ScheduleContainer implements ScheduleInterface {
             frag.setWeek(week);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame, frag);
-            fragmentTransaction.addToBackStack(null);
+            //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 

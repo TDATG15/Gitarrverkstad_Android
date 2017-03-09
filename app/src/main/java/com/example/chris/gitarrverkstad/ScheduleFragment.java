@@ -126,19 +126,30 @@ public class ScheduleFragment extends Fragment {
     public void populateViewHours(){
         List<List<Pair<TextView>>> hours = new ArrayList<List<Pair<TextView>>>();
         //adding map
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         List<Pair<TextView>> templist = fillList("b", calendar.getTime());
+        TextView textView = (TextView) currentView.findViewById(R.id.titlef);
+        textView.setText(formatter.format(calendar.getTime()));
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+        textView = (TextView) currentView.findViewById(R.id.titleb);
+        textView.setText(formatter.format(calendar.getTime()));
         templist = fillList("c", calendar.getTime());
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        textView = (TextView) currentView.findViewById(R.id.titlec);
+        textView.setText(formatter.format(calendar.getTime()));
         templist = fillList("d", calendar.getTime());
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        textView = (TextView) currentView.findViewById(R.id.titled);
+        textView.setText(formatter.format(calendar.getTime()));
         templist = fillList("e", calendar.getTime());
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        textView = (TextView) currentView.findViewById(R.id.titlee);
+        textView.setText(formatter.format(calendar.getTime()));
         templist = fillList("f", calendar.getTime());
         hours.add(templist);
         scheduleContainer.setHours(hours);
@@ -325,6 +336,7 @@ public class ScheduleFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         menu.add("Lägg in arbete");
         menu.add("Välj vecka");
         inflater.inflate(R.menu.empty_menu, menu);
@@ -345,7 +357,7 @@ public class ScheduleFragment extends Fragment {
             frag.setScheduleInterface(scheduleContainer);
             FragmentTransaction fragmentTransaction = fragManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame, frag);
-            fragmentTransaction.addToBackStack(null);
+            //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else if (item.toString().equals("Välj vecka")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -368,8 +380,9 @@ public class ScheduleFragment extends Fragment {
                     scheduleFragment.setWeek(which + 1);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, scheduleFragment);
-                    fragmentTransaction.addToBackStack(null);
+                    //fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                    dialog.dismiss();
                 }
             });
             builder.create();
@@ -393,7 +406,6 @@ public class ScheduleFragment extends Fragment {
             frag.setScheduleInterface(scheduleContainer);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame, frag);
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
         }

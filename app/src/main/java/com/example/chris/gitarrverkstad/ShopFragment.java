@@ -179,7 +179,7 @@ public class ShopFragment extends Fragment {
                 frag.setSelectedItem(galleryItems.get(position));
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, frag);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -214,7 +214,7 @@ public class ShopFragment extends Fragment {
             frag.setInstrumentId(newestInstrumentId);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame, frag);
-            fragmentTransaction.addToBackStack(null);
+            //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
