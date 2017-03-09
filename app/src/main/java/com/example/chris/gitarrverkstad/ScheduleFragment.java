@@ -3,6 +3,7 @@ package com.example.chris.gitarrverkstad;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.Service;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -55,6 +56,7 @@ public class ScheduleFragment extends Fragment {
     int week;
 
     ScheduleContainer scheduleContainer;
+    String displaytext;
     Calendar calendar;
     boolean eventsConnected = false;
     //int handlingDay = Calendar.DAY_OF_WEEK;
@@ -76,12 +78,15 @@ public class ScheduleFragment extends Fragment {
             Toast.makeText(getActivity(), text,
                     Toast.LENGTH_LONG).show();
         }
-        //getXmlInformation();
-        setHasOptionsMenu(true);
-        if(week != 0) {
+        if(displaytext != null){
+            Toast.makeText(getActivity(), displaytext,
+                    Toast.LENGTH_LONG).show();
+        } else if(week != 0) {
             Toast.makeText(getActivity(), "Vecka " + week + "",
                     Toast.LENGTH_LONG).show();
         }
+        //getXmlInformation();
+        setHasOptionsMenu(true);
         return currentView;
     }
 
@@ -337,7 +342,10 @@ public class ScheduleFragment extends Fragment {
             ScheduleNewFragment frag =  new ScheduleNewFragment();
             frag.setWeek(week);
             frag.setScheduleInterface(scheduleContainer);
-            fragManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+            FragmentTransaction fragmentTransaction = fragManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame, frag);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         } else if (item.toString().equals("Välj vecka")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item);
@@ -357,7 +365,10 @@ public class ScheduleFragment extends Fragment {
                     FragmentManager fragmentManager = getFragmentManager();
                     ScheduleFragment scheduleFragment = new ScheduleFragment();
                     scheduleFragment.setWeek(which + 1);
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, scheduleFragment).commit();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.content_frame, scheduleFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 }
             });
             builder.create();
@@ -379,7 +390,11 @@ public class ScheduleFragment extends Fragment {
             frag.setDate(date);
             frag.setWeek(week);
             frag.setScheduleInterface(scheduleContainer);
-            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame, frag);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         }
 
         public void setDate(Date date) {

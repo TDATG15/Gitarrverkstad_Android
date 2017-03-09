@@ -1,6 +1,7 @@
 package com.example.chris.gitarrverkstad;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
@@ -70,7 +71,9 @@ public class ScheduleContainer implements ScheduleInterface {
 
                 @Override
                 public void onResponse(Call<ConsultationList> call, Response<ConsultationList> response) {
-                    consultationList = response.body();
+                    if(response.body() != null) {
+                        consultationList = response.body();
+                    }
                     afterConnection();
                 }
 
@@ -104,23 +107,27 @@ public class ScheduleContainer implements ScheduleInterface {
         StringBuilder stringBuilder = new StringBuilder("");
         String tempDate;
         int time;
-        for(int i = 0; i < consultationList.getConsultationList().size(); i++){
-            stringBuilder = new StringBuilder("");
-            stringBuilder.append(consultationList.getConsultationList().get(i).getDate(), 0, 10);
-            tempDate = stringBuilder.toString();
-            stringBuilder = new StringBuilder("");
-            stringBuilder.append(consultationList.getConsultationList().get(i).getTime(), 11, 13);
-            time = Integer.parseInt(stringBuilder.toString()) - 10;
-            timeBlocks.add(new TimeBlock(tempDate, time, consultationList.getConsultationList().get(i)));
+        if(consultationList != null) {
+            for (int i = 0; i < consultationList.getConsultationList().size(); i++) {
+                stringBuilder = new StringBuilder("");
+                stringBuilder.append(consultationList.getConsultationList().get(i).getDate(), 0, 10);
+                tempDate = stringBuilder.toString();
+                stringBuilder = new StringBuilder("");
+                stringBuilder.append(consultationList.getConsultationList().get(i).getTime(), 11, 13);
+                time = Integer.parseInt(stringBuilder.toString()) - 10;
+                timeBlocks.add(new TimeBlock(tempDate, time, consultationList.getConsultationList().get(i)));
+            }
         }
-        for(int i = 0; i < eventList.getEvents().size(); i++){
-            stringBuilder = new StringBuilder("");
-            stringBuilder.append(eventList.getEvents().get(i).getDate(), 0, 10);
-            tempDate = stringBuilder.toString();
-            stringBuilder = new StringBuilder("");
-            stringBuilder.append(eventList.getEvents().get(i).getTime(), 11, 13);
-            time = Integer.parseInt(stringBuilder.toString()) - 10;
-            timeBlocks.add(new TimeBlock(tempDate, time, eventList.getEvents().get(i)));
+        if(eventList != null) {
+            for (int i = 0; i < eventList.getEvents().size(); i++) {
+                stringBuilder = new StringBuilder("");
+                stringBuilder.append(eventList.getEvents().get(i).getDate(), 0, 10);
+                tempDate = stringBuilder.toString();
+                stringBuilder = new StringBuilder("");
+                stringBuilder.append(eventList.getEvents().get(i).getTime(), 11, 13);
+                time = Integer.parseInt(stringBuilder.toString()) - 10;
+                timeBlocks.add(new TimeBlock(tempDate, time, eventList.getEvents().get(i)));
+            }
         }
     }
 
@@ -232,7 +239,10 @@ public class ScheduleContainer implements ScheduleInterface {
         frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));*/
         frag.setWeek(week);
         frag.text = text;
-        fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+        frag.displaytext = "Nytt inlägg " + availableDate.substring(0, 10) + " kl " + availableTime.substring(11, 13);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, frag);
+        fragmentTransaction.commit();
     }
 
     public void postEvent(Event event){
@@ -304,7 +314,10 @@ public class ScheduleContainer implements ScheduleInterface {
             }
             for (int i = 0; i < times.size(); i++) {
                 int temptime = times.get(i).getTime();
-                int duration = Integer.parseInt(times.get(i).getEvent().getDuration());
+                int duration = 1;
+                if(times.get(i).getType() == 2) {
+                    duration = Integer.parseInt(times.get(i).getEvent().getDuration());
+                }
                 for (int j = 0; j < duration; j++) {
                     if (temptime + j < 8) {
                         strings.set(temptime + j, "T");
@@ -529,7 +542,10 @@ public class ScheduleContainer implements ScheduleInterface {
             frag.setSelectedId(id);
             frag.setSelectedType(type);
             frag.setWeek(week);
-            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame, frag);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
 
 

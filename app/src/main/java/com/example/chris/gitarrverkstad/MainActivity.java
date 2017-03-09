@@ -1,5 +1,7 @@
 package com.example.chris.gitarrverkstad;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -41,7 +43,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        getFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, new HomeFragment());
+        fragmentTransaction.commit();
+    }
+
+    public void fragmentTransition(Fragment fragment, FragmentManager fragmentManager){
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -52,17 +63,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+            fragmentTransition(new HomeFragment(), fragmentManager);
         } else if (id == R.id.nav_schedule) {
             ScheduleFragment frag = new ScheduleFragment();
             Calendar cal = Calendar.getInstance();
-            //Calendar cal = GregorianCalendar.getInstance(Locale.FRANCE);
             Date date = new Date();
             cal.setTime(date);
             frag.setWeek(cal.get(Calendar.WEEK_OF_YEAR));
-            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+            fragmentTransition(frag, fragmentManager);
         } else if (id == R.id.nav_shop) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ShopFragment()).commit();
+            fragmentTransition(new ShopFragment(), fragmentManager);
         } 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
