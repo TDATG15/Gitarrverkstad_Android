@@ -126,30 +126,30 @@ public class ScheduleFragment extends Fragment {
     public void populateViewHours(){
         List<List<Pair<TextView>>> hours = new ArrayList<List<Pair<TextView>>>();
         //adding map
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         List<Pair<TextView>> templist = fillList("b", calendar.getTime());
         TextView textView = (TextView) currentView.findViewById(R.id.titlef);
-        textView.setText(formatter.format(calendar.getTime()));
+        textView.setText("M    " + formatter.format(calendar.getTime()));
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
         textView = (TextView) currentView.findViewById(R.id.titleb);
-        textView.setText(formatter.format(calendar.getTime()));
+        textView.setText("Ti   " +  formatter.format(calendar.getTime()));
         templist = fillList("c", calendar.getTime());
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         textView = (TextView) currentView.findViewById(R.id.titlec);
-        textView.setText(formatter.format(calendar.getTime()));
+        textView.setText("O    " + formatter.format(calendar.getTime()));
         templist = fillList("d", calendar.getTime());
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
         textView = (TextView) currentView.findViewById(R.id.titled);
-        textView.setText(formatter.format(calendar.getTime()));
+        textView.setText("To   " + formatter.format(calendar.getTime()));
         templist = fillList("e", calendar.getTime());
         hours.add(templist);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         textView = (TextView) currentView.findViewById(R.id.titlee);
-        textView.setText(formatter.format(calendar.getTime()));
+        textView.setText("F    " + formatter.format(calendar.getTime()));
         templist = fillList("f", calendar.getTime());
         hours.add(templist);
         scheduleContainer.setHours(hours);
