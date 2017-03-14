@@ -189,14 +189,17 @@ public class NewShopItemFragment extends Fragment {
             String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             String image_Str = null;
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 72, stream);
-                byte[] byte_Arr = stream.toByteArray();
-                image_Str = Base64.encodeToString(byte_Arr, Base64.DEFAULT);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(imageUri != null) {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 72, stream);
+                    byte[] byte_Arr = stream.toByteArray();
+                    image_Str = Base64.encodeToString(byte_Arr, Base64.DEFAULT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             Retrofit retrofit = new Retrofit.Builder()
