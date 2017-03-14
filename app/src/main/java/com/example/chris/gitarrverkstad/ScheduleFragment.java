@@ -350,7 +350,7 @@ public class ScheduleFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //TODO: open selected week schedule
-        if(item.toString().equals("Lägg in arbete")){
+        if(item.toString().equals("Lägg in arbete automatiskt")){
             FragmentManager fragManager = getFragmentManager();
             ScheduleNewFragment frag =  new ScheduleNewFragment();
             frag.setWeek(week);
