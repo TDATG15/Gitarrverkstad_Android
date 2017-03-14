@@ -537,11 +537,11 @@ public class ScheduleContainer implements ScheduleInterface {
 
         @Override
         public void onClick(View v) {
-            FragmentManager fragmentManager = getMyFragmentManager();
             ScheduleEditFragment frag =  new ScheduleEditFragment();
             frag.setSelectedId(id);
             frag.setSelectedType(type);
             frag.setWeek(week);
+            FragmentManager fragmentManager = getMyFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame, frag);
             //fragmentTransaction.addToBackStack(null);

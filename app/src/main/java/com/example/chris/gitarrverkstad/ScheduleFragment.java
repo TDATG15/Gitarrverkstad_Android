@@ -337,7 +337,7 @@ public class ScheduleFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        menu.add("Lägg in arbete");
+        menu.add("Lägg in arbete automatiskt");
         menu.add("Välj vecka");
         inflater.inflate(R.menu.empty_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);

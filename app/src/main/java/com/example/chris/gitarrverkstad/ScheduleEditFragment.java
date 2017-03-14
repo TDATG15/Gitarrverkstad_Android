@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,6 +50,9 @@ public class ScheduleEditFragment extends Fragment{
     Button saveButton;
     Button deleteButton;
 
+    public ScheduleEditFragment(){
+        super();
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -136,7 +140,8 @@ public class ScheduleEditFragment extends Fragment{
                             editTextName.getText().toString(),
                             editTextTel.getText().toString()
                     );
-                    retrofit2.Call<Consultation> call = client.putConsultation(selectedConsultation, selectedConsultation.getConId());
+                    //retrofit2.Call<Consultation> call = client.putConsultation(selectedConsultation, selectedConsultation.getConId());
+                    retrofit2.Call<Consultation> call = client.putConsultation(consultation, Integer.toString(selectedId));
                     call.enqueue(new Callback<Consultation>() {
 
                         @Override
@@ -218,6 +223,7 @@ public class ScheduleEditFragment extends Fragment{
             editTextTel.setText(consultation.getTel());
             viewTextDuration.setText("1 timme");
             editTextEmail.setText("");
+            selectedId = Integer.parseInt(consultation.getConId());
             editTextDesc.setText("En konsultation med " + consultation.getName());
             editTextName.setText(consultation.getName());
             viewTextType.setText("Konsultation kl " + newSelectedConsultation.getTime().substring(11, 13) + ":00");

@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment {
                        textView.setText(appointments.get(0).getTime());
                    }
                } else {
-                   emptyListText.setText("Inga bokningar just nu");
+                   emptyListText.setText("");
                    adapter.notifyDataSetChanged();
                    System.out.println("laksnflknsf");
                }
