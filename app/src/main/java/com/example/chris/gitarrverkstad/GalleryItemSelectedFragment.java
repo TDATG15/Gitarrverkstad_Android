@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -61,7 +62,6 @@ public class GalleryItemSelectedFragment extends Fragment {
         editTextCurrentOwn = (EditText) currentView.findViewById(R.id.selectedGalleryItem_current_owner);
         editTextCurrentOwn.setText(selectedItem.getCreator());
         registerClickCallback();
-        setHasOptionsMenu(true);
         return currentView;
     }
 
@@ -75,7 +75,13 @@ public class GalleryItemSelectedFragment extends Fragment {
     }
 
     public void registerClickCallback(){
+        Button saveButton = (Button) currentView.findViewById(R.id.gallery_edit_save);
+        Button cancelButton = (Button) currentView.findViewById(R.id.gallery_edit_cancel);
+        Button removeButton = (Button) currentView.findViewById(R.id.gallery_edit_delete);
         ImageButton new_picture = (ImageButton) currentView.findViewById(R.id.selectedGalleryItem_photob);
+
+        builder = new AlertDialog.Builder(getActivity());
+
         new_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +89,85 @@ public class GalleryItemSelectedFragment extends Fragment {
                 File file = getFile();
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                 startActivityForResult(camera_intent, CAM_REQUEST);
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(SimpleXmlConverterFactory.create())
+                        .build();
+                InstrumentClient client = retrofit.create(InstrumentClient.class);
+
+                //public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareagare, String tillverkare, String img){
+                retrofit2.Call<Instrument> call = client.putInstrument(new Instrument(
+                                editTextDesc.getText().toString(),
+                                Integer.parseInt(selectedItem.getInstrumentID()),
+                                editTextModel.getText().toString(),
+                                editTextPrice.getText().toString(),
+                                editTextPrevOwn.getText().toString(),
+                                editTextCurrentOwn.getText().toString(),
+                                selectedItem.getImg()),
+                        selectedItem.getInstrumentID());
+                call.enqueue(new Callback<Instrument>() {
+
+                    @Override
+                    public void onResponse(Call<Instrument> call, Response<Instrument> response) {
+                        exitLayout();
+                        Toast toast = Toast.makeText(currentView.getContext(), "Inlägg ändrad!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Instrument> call, Throwable t) {
+                        exitLayout();
+                    }
+
+                });
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setMessage("Är du säker på att du vill avbryta ändringar?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        exitLayout();
+                    }
+                });
+                builder.create();
+                builder.show();
+            }
+        });
+
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setMessage("Är du säker på att du vill radera inlägget?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(API_BASE_URL)
+                                .client(new OkHttpClient())
+                                .addConverterFactory(SimpleXmlConverterFactory.create())
+                                .build();
+                        InstrumentClient client = retrofit.create(InstrumentClient.class);
+                        retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
+                        call.enqueue(new CustomCallback());
+                        Toast toast = Toast.makeText(currentView.getContext(), "Tog bort inlägg!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+                builder.create();
+                builder.show();
             }
         });
     }
@@ -121,89 +206,5 @@ public class GalleryItemSelectedFragment extends Fragment {
         public void onFailure(Call<Instrument> call, Throwable t) {
             exitLayout();
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.edit_shop_item_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        builder = new AlertDialog.Builder(getActivity());
-
-        if (id == R.id.edit_shop_item_accept) {
-            //TODO: Accepting makes program crash, something with the text i think, might be that the server is down.
-            String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(API_BASE_URL)
-                    .client(new OkHttpClient())
-                    .addConverterFactory(SimpleXmlConverterFactory.create())
-                    .build();
-            InstrumentClient client = retrofit.create(InstrumentClient.class);
-
-            //public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareagare, String tillverkare, String img){
-            retrofit2.Call<Instrument> call = client.putInstrument(new Instrument(
-                    editTextDesc.getText().toString(),
-                    Integer.parseInt(selectedItem.getInstrumentID()),
-                    editTextModel.getText().toString(),
-                    editTextPrice.getText().toString(),
-                    editTextPrevOwn.getText().toString(),
-                    editTextCurrentOwn.getText().toString(),
-                    selectedItem.getImg()),
-            selectedItem.getInstrumentID());
-            call.enqueue(new Callback<Instrument>() {
-
-                @Override
-                public void onResponse(Call<Instrument> call, Response<Instrument> response) {
-                    exitLayout();
-                    Toast toast = Toast.makeText(currentView.getContext(), "Inlägg ändrad!", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-                @Override
-                public void onFailure(Call<Instrument> call, Throwable t) {
-                    exitLayout();
-                }
-
-            });
-        } else if (id == R.id.edit_shop_item_remove) {
-            builder.setMessage("Är du säker på att du vill radera inlägget?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(API_BASE_URL)
-                            .client(new OkHttpClient())
-                            .addConverterFactory(SimpleXmlConverterFactory.create())
-                            .build();
-                    InstrumentClient client = retrofit.create(InstrumentClient.class);
-                    retrofit2.Call<Instrument> call = client.deleteInstrument(selectedItem.getInstrumentID());
-                    call.enqueue(new CustomCallback());
-                    Toast toast = Toast.makeText(currentView.getContext(), "Tog bort inlägg!", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-            builder.create();
-            builder.show();
-        } else if (id == R.id.edit_shop_item_cancel) {
-            builder.setMessage("Är du säker på att du vill avbryta ändringar?").setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    exitLayout();
-                }
-            });
-            builder.create();
-            builder.show();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -6,11 +6,17 @@
     android:background="@color/backgroundColor">
 
     <TextView
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textSize="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dagens ärenden" />
 
     <RelativeLayout
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_height="0dp"
         android:layout_weight="50"
         android:layout_width="match_parent"
@@ -33,9 +39,10 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:padding="10dp"
         android:background="@drawable/border"
             android:layout_height="0dp"
-            android:layout_weight="50"
+            android:layout_weight="25"
             android:layout_width="match_parent"
             android:orientation="horizontal">
     <RelativeLayout

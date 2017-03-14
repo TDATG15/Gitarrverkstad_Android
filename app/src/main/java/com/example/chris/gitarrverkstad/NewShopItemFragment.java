@@ -75,28 +75,86 @@ public class NewShopItemFragment extends Fragment {
         currentView = inflater.inflate(R.layout.new_shop_item, container, false);
         linearLayout = (LinearLayout) currentView.findViewById(R.id.new_item_linear);
         ImageButton addPictureButton = (ImageButton) currentView.findViewById(R.id.new_picture_button);
-        addPictureButton.setOnClickListener(cameraListener);
         editTextDesc = (EditText) currentView.findViewById(R.id.new_item_desc);
         editTextCurrOwn = (EditText) currentView.findViewById(R.id.new_item_maker);
         editTextModel = (EditText) currentView.findViewById(R.id.new_item_model);
         editTextPrice = (EditText) currentView.findViewById(R.id.new_item_price);
         editTextPrevOwn = (EditText) currentView.findViewById(R.id.new_item_previous_owner);
 
-        setHasOptionsMenu(true);
+        addListeners();
         // Function? to load image array into imageview to display images
         // add textfields for information
         // add buttons to confirm item or discard it
         return currentView;
     }
 
-    //Action listener for button
-    private View.OnClickListener cameraListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            takePhoto(v);
-        }
-    };
-/*
+    public void addListeners() {
+        ImageButton addPictureButton = (ImageButton) currentView.findViewById(R.id.new_picture_button);
+        Button publishButton = (Button) currentView.findViewById(R.id.new_shop_item_publish);
+        Button cancelButton = (Button) currentView.findViewById(R.id.new_shop_item_cancel);
+
+        addPictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePhoto(v);
+            }
+        });
+
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                String image_Str = null;
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 72, stream);
+                    byte[] byte_Arr = stream.toByteArray();
+                    image_Str = Base64.encodeToString(byte_Arr, Base64.DEFAULT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(SimpleXmlConverterFactory.create())
+                        .build();
+                InstrumentClient client = retrofit.create(InstrumentClient.class);
+                retrofit2.Call<Instrument> call = client.postInstrument(new Instrument(
+                        editTextDesc.getText().toString(),
+                        instrumentId,
+                        editTextModel.getText().toString(),
+                        editTextPrice.getText().toString(),
+                        editTextPrevOwn.getText().toString(),
+                        editTextCurrOwn.getText().toString(),
+                        image_Str
+                ));
+                call.enqueue(new CustomCallback());
+
+                Toast toast = Toast.makeText(currentView.getContext(), "Publicerad!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Är du säker på att du vill radera inlägget?")
+                        .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                exitLayout();
+                            }
+                        });
+                builder.create();
+                builder.show();
+            }
+        });
+    }
+
+    /*
     public void uploadPhoto(){
         OkHttpClient client = new OkHttpClient.Builder().build();
         UploadService service = new Retrofit.Builder().baseUrl("http://10.250.121.150:8080").client(client).build().create(UploadService.class);
@@ -170,69 +228,5 @@ public class NewShopItemFragment extends Fragment {
         public void onFailure(Call<Instrument> call, Throwable t) {
             exitLayout();
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.new_shop_item_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.new_shop_item_menu_publish) {
-            String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            String image_Str = null;
-            if(imageUri != null) {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 72, stream);
-                    byte[] byte_Arr = stream.toByteArray();
-                    image_Str = Base64.encodeToString(byte_Arr, Base64.DEFAULT);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(API_BASE_URL)
-                    .client(new OkHttpClient())
-                    .addConverterFactory(SimpleXmlConverterFactory.create())
-                    .build();
-            InstrumentClient client = retrofit.create(InstrumentClient.class);
-            retrofit2.Call<Instrument> call = client.postInstrument(new Instrument(
-                    editTextDesc.getText().toString(),
-                    instrumentId,
-                    editTextModel.getText().toString(),
-                    editTextPrice.getText().toString(),
-                    editTextPrevOwn.getText().toString(),
-                    editTextCurrOwn.getText().toString(),
-                    image_Str
-            ));
-            call.enqueue(new CustomCallback());
-
-            Toast toast = Toast.makeText(currentView.getContext(), "Publicerad!", Toast.LENGTH_SHORT);
-            toast.show();
-        } else if (id == R.id.new_shop_item_menu_cancel) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Är du säker på att du vill radera inlägget?")
-                    .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            exitLayout();
-                        }
-                    });
-            builder.create();
-            builder.show();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
