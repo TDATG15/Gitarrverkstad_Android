@@ -149,14 +149,16 @@ public class GalleryItemSelectedFragment extends Fragment {
                     .build();
             InstrumentClient client = retrofit.create(InstrumentClient.class);
 
+            //public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareagare, String tillverkare, String img){
             retrofit2.Call<Instrument> call = client.putInstrument(new Instrument(
                     editTextDesc.getText().toString(),
                     Integer.parseInt(selectedItem.getInstrumentID()),
                     editTextModel.getText().toString(),
                     editTextPrice.getText().toString(),
                     editTextPrevOwn.getText().toString(),
-                    editTextCurrentOwn.getText().toString()),
-                    selectedItem.getInstrumentID());
+                    editTextCurrentOwn.getText().toString(),
+                    selectedItem.getImg()),
+            selectedItem.getInstrumentID());
             call.enqueue(new Callback<Instrument>() {
 
                 @Override

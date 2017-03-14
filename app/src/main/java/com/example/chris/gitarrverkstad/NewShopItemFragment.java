@@ -195,7 +195,8 @@ public class NewShopItemFragment extends Fragment {
                     editTextModel.getText().toString(),
                     editTextPrice.getText().toString(),
                     editTextPrevOwn.getText().toString(),
-                    editTextCurrOwn.getText().toString())
+                    editTextCurrOwn.getText().toString(),
+                    null)
             );
             call.enqueue(new CustomCallback());
 

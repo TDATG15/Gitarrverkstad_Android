@@ -1,5 +1,7 @@
 package com.example.chris.gitarrverkstad;
 
+import java.io.ByteArrayOutputStream;
+
 /**
  * Created by stefa_000 on 2017-02-13.
  */
@@ -12,8 +14,10 @@ public class GalleryItem {
     private String creator;
     private int imageID;
     private String prevown;
+    private String img;
 
-    public GalleryItem(String desc, int imageID, String model, int price, String creator, String instrumentID, String prevown){
+
+    public GalleryItem(String desc, int imageID, String model, int price, String creator, String instrumentID, String prevown, String img){
         this.price = price;
         this.desc = desc;
         this.model = model;
@@ -21,6 +25,15 @@ public class GalleryItem {
         this.creator = creator;
         this.instrumentID = instrumentID;
         this.prevown = prevown;
+        this.img = img;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getPrevown() {

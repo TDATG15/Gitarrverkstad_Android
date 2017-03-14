@@ -10,9 +10,9 @@ import java.util.List;
  * Created by stefa_000 on 2017-02-27.
  */
 
-@Root(name = "instruments")
+@Root(name = "guitars")
 public class InstrumentList {
-    @ElementList(name = "instrument", required = true, inline = true)
+    @ElementList(name = "guitar", required = false, inline = true)
     private List<Instrument> instruments;
 
     public List<Instrument> getInstruments() {

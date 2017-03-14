@@ -14,21 +14,21 @@ import retrofit2.http.Path;
 
 public interface InstrumentClient {
 
-    @GET("/ProjectEE-war/webresources/entities.instrument")
+    @GET("/ProjectEE-war/webresources/entities.guitar")
     Call<InstrumentList> getInstruments();
 
-    @DELETE("/ProjectEE-war/webresources/entities.instrument/{index}")
+    @DELETE("/ProjectEE-war/webresources/entities.guitar/{index}")
     Call<Instrument> deleteInstrument(
             @Path("index") String index
     );
 
-    @PUT("/ProjectEE-war/webresources/entities.instrument/{index}")
+    @PUT("/ProjectEE-war/webresources/entities.guitar/{index}")
     Call<Instrument> putInstrument(
             @Body Instrument instrument,
             @Path("index") String index
     );
 
-    @POST("/ProjectEE-war/webresources/entities.instrument")
+    @POST("/ProjectEE-war/webresources/entities.guitar")
     Call<Instrument> postInstrument(
             @Body Instrument instrument
     );

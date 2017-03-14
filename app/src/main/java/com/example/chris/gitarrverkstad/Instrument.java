@@ -3,31 +3,36 @@ package com.example.chris.gitarrverkstad;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by stefa_000 on 2017-02-28.
  */
 
-@Root(name="instrument", strict = false)
+@Root(name="guitar", strict = false)
 public class Instrument {
 
-    @Element(name = "beskrivning")
+    @Element(name = "img")
+    private String img;
+
+    @Element(name = "descr")
     private String beskrivning;
 
-    @Element(name = "instrumentId")
+    @Element(name = "gid")
     private int instrumentId;
 
     @Element(name = "model")
     private String model;
 
-    @Element(name = "pris")
+    @Element(name = "price")
     private String pris;
 
-    @Element(name="tidigareagare")
+    @Element(name="prvowner")
     private String tidigareagare;
 
-    @Element(name = "tillverkare")
+    @Element(name = "manf")
     private String tillverkare;
 
     public String getBeskrivning() {
@@ -78,22 +83,44 @@ public class Instrument {
         this.tillverkare = tillverkare;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getTidigareagare() {
+        return tidigareagare;
+    }
+
+    public void setTidigareagare(String tidigareagare) {
+        this.tidigareagare = tidigareagare;
+    }
+
     public Instrument(){
         super();
     }
 
-    public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareagare, String tillverkare){
+    public Instrument(String beskrivning, int instrumentId, String model, String pris, String tidigareagare, String tillverkare, String img){
         if(beskrivning.equals(""))
             this.beskrivning = "Beskrivning";
         else
             this.beskrivning = beskrivning;
         this.instrumentId = instrumentId;
+        if(img == null){
+            this.img = "/9j/4AAQSkZJRgABAQEAZABkAAD/";
+        }
+        else {
+            this.img = img;
+        }
         if(model.equals(""))
             this.model = "Modell";
         else
             this.model = model;
         if(pris.equals(""))
-            this.pris = "Inget pris satt";
+            this.pris = "0";
         else
             this.pris = pris;
         if(tidigareagare.equals(""))
