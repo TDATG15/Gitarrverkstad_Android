@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,7 +35,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -58,6 +62,7 @@ public class NewShopItemFragment extends Fragment {
     private static int TAKE_PICTURE = 1;
     private Uri imageUri;
     private LinearLayout linearLayout;
+    String imageToSend;
     int instrumentId;
     EditText editTextDesc;
     EditText editTextModel;
@@ -96,6 +101,7 @@ public class NewShopItemFragment extends Fragment {
         OkHttpClient client = new OkHttpClient.Builder().build();
         UploadService service = new Retrofit.Builder().baseUrl("http://10.250.121.150:8080").client(client).build().create(UploadService.class);
         File file = new File(imageUri.getPath());
+
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpg"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_text");
@@ -113,8 +119,8 @@ public class NewShopItemFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-    }*/
-
+    }
+*/
     //Take photo
     private void takePhoto(View v) {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -182,6 +188,16 @@ public class NewShopItemFragment extends Fragment {
         if (id == R.id.new_shop_item_menu_publish) {
             String API_BASE_URL = "http://andersverkstad.zapto.org:8080";
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            String image_Str = null;
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 72, stream);
+                byte[] byte_Arr = stream.toByteArray();
+                image_Str = Base64.encodeToString(byte_Arr, Base64.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(API_BASE_URL)
@@ -196,8 +212,8 @@ public class NewShopItemFragment extends Fragment {
                     editTextPrice.getText().toString(),
                     editTextPrevOwn.getText().toString(),
                     editTextCurrOwn.getText().toString(),
-                    null)
-            );
+                    image_Str
+            ));
             call.enqueue(new CustomCallback());
 
             Toast toast = Toast.makeText(currentView.getContext(), "Publicerad!", Toast.LENGTH_SHORT);

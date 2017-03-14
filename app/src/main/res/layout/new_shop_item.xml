@@ -82,7 +82,7 @@
 
             <EditText
                 android:id="@+id/new_item_maker"
-                android:hint="Tillverkare"
+                android:hint="Tillverkare0*"
                 android:padding="20dp"
                 android:layout_below="@+id/new_item_previous_owner"
                 android:layout_width="match_parent"

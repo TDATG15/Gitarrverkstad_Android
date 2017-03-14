@@ -3,9 +3,14 @@ package com.example.chris.gitarrverkstad;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -159,7 +164,17 @@ public class ShopFragment extends Fragment {
             }
             GalleryItem currentItem = galleryItems.get(position);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.itemgallery_image);
-            imageView.setImageResource(currentItem.getImageID());
+            byte[] decodedString = Base64.decode(currentItem.getImg(), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            if(bitmap != null){
+                Drawable image = new BitmapDrawable(Bitmap.createScaledBitmap(bitmap, 72, 72, true));
+                imageView.setImageDrawable(image);
+            }
+            else
+            {
+                imageView.setImageResource(currentItem.getImageID());
+            }
+
             TextView textView = (TextView) itemView.findViewById(R.id.itemgallery_name);
             textView.setText(currentItem.getModel());
             textView = (TextView) itemView.findViewById(R.id.itemgallery_desc);
