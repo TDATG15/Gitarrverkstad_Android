@@ -5,22 +5,28 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
 
-    <TextView
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dagens ärenden" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/todays_activity"
+            android:padding="10dp"
+            android:textStyle="italic"
+            android:textSize="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dagens ärenden" />
+    </RelativeLayout>
+
 
     <RelativeLayout
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:layout_height="0dp"
         android:layout_weight="50"
         android:layout_width="match_parent"
         android:orientation="horizontal">
+
 
         <TextView
             android:id="@+id/if_empty_list_textview"
@@ -38,21 +44,25 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:padding="10dp"
-        android:background="@drawable/border"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:layout_width="match_parent"
-            android:orientation="horizontal">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/selected_layout">
+        android:layout_height="150dp"
+        android:background="@drawable/border"
+        android:id="@+id/selected_layout"
+        android:padding="10dp">
+
 
         <TextView
+            android:text="Kund Namn"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:id="@+id/selected_cust"
+            />
+
+        <TextView
+            android:paddingTop="5dp"
             android:text="Beskrivning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,31 +70,14 @@
             android:layout_below="@+id/selected_cust"
             android:layout_alignParentStart="true" />
 
-        <TextView
-            android:text="Kund Namn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:id="@+id/selected_cust"
-            android:layout_below="@+id/textView3"
-            android:layout_alignParentStart="true" />
 
         <TextView
             android:text="Tid"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/selected_time"
-            android:layout_alignTop="@+id/selected_cust"
-            android:layout_alignParentEnd="true" />
+            android:id="@+id/selected_time" />
 
-        <TextView
-            android:text="Valt ärende"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
-        </LinearLayout>
 </LinearLayout>

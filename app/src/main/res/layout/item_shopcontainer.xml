@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/backgroundColor">>
+    android:background="@color/backgroundColor"
+    android:padding="10dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -17,6 +18,8 @@
         android:minWidth="120dp" />
 
     <TextView
+        android:textStyle="bold"
+        android:paddingLeft="10dp"
         android:textSize="20sp"
         android:text="Guitar Name"
         android:layout_width="wrap_content"
@@ -26,6 +29,8 @@
         android:id="@+id/itemgallery_name" />
 
     <TextView
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         android:text="Description bla bla bla"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +42,8 @@
         android:text="Price here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/itemgallery_price" />
+
 </RelativeLayout>
